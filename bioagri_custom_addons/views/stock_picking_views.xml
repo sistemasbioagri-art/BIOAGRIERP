@@ -6,8 +6,7 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <group name="bioagri_logistics" string="Datos Logísticos (Bioagri)"
-                       invisible="picking_type_id.code not in ('outgoing', 'incoming')">
+                <group name="bioagri_logistics" string="Datos Logísticos (Bioagri)">
                     <field name="x_chofer_nombre"
                            required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
                            placeholder="Nombre del chofer"/>
