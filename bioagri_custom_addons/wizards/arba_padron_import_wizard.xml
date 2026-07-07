@@ -74,18 +74,14 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_arba_root"
-              name="ARBA"
-              parent="account.menu_finance_configuration"
-              sequence="99"/>
     <menuitem id="menu_arba_padron_import"
-              name="Importar Padrón"
-              parent="menu_arba_root"
+              name="Importar Padrón ARBA"
+              parent="account.menu_finance_configuration"
               action="action_arba_padron_import_wizard"
-              sequence="10"/>
+              sequence="99"/>
     <menuitem id="menu_arba_padron_history"
-              name="Historial de Importaciones"
-              parent="menu_arba_root"
+              name="Historial de Importaciones ARBA"
+              parent="account.menu_finance_configuration"
               action="action_arba_padron_import"
-              sequence="20"/>
+              sequence="100"/>
 </odoo>
