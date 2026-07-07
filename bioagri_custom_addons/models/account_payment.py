@@ -56,7 +56,7 @@ class AccountPayment(models.Model):
     def action_generate_sire_txt(self):
         payments = self.env['account.payment'].search([
             ('payment_type', '=', 'outbound'),
-            ('state', '=', 'posted'),
+            ('state', 'in', ('in_process', 'paid')),
             ('x_sire_exported', '=', False),
             ('x_retencion_ganancias', '>', 0),
         ])

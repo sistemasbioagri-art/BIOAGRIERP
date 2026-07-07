@@ -76,7 +76,7 @@
 
     <menuitem id="menu_arba_root"
               name="ARBA"
-              parent="account.menu_finance_config"
+              parent="account.menu_finance_configuration"
               sequence="99"/>
     <menuitem id="menu_arba_padron_import"
               name="Importar Padrón"
