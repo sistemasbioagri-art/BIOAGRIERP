@@ -7,6 +7,8 @@ class PurchaseOrder(models.Model):
     def button_confirm(self):
         res = super().button_confirm()
         for order in self:
+            if not order.picking_ids:
+                order._create_picking()
             if order.incoterm_id and order.incoterm_id.code in ('FOB', 'CIF'):
                 self._create_draft_landed_cost(order)
         return res
