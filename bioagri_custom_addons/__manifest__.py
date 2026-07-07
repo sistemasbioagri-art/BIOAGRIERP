@@ -23,6 +23,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'stock',
         'purchase',
         'sale_stock',
+        'stock_landed_costs',
         'l10n_ar',
     ],
     'data': [
