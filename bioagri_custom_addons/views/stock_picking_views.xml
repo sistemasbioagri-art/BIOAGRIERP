@@ -15,4 +15,10 @@
             </xpath>
         </field>
     </record>
+
+    <menuitem id="menu_landed_costs"
+              name="Costos en destino"
+              parent="stock.menu_stock_root"
+              action="stock_landed_costs.action_stock_landed_cost"
+              sequence="99"/>
 </odoo>
