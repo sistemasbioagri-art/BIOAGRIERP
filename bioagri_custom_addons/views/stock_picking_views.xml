@@ -4,23 +4,14 @@
         <field name="name">stock.picking.form.bioagri</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="priority" eval="100"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="after">
-                <group name="bioagri_logistics" string="Datos Logísticos (Bioagri)">
-                    <field name="x_chofer_nombre"
-                           required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
-                           placeholder="Nombre del chofer"/>
-                    <field name="x_chofer_dni"
-                           required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
-                           placeholder="DNI"/>
-                    <field name="x_patente"
-                           required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
-                           placeholder="Patente"/>
-                    <field name="x_transportista_id" placeholder="Empresa de transporte"/>
-                    <field name="x_remito_proveedor"
-                           required="(picking_type_id.code == 'incoming') and (state not in ('draft', 'cancel'))"
-                           placeholder="N° remito del proveedor"/>
-                </group>
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="x_chofer_nombre" placeholder="Nombre del chofer"/>
+                <field name="x_chofer_dni" placeholder="DNI"/>
+                <field name="x_patente" placeholder="Patente"/>
+                <field name="x_transportista_id" placeholder="Empresa de transporte" domain="[('is_company', '=', True)]"/>
+                <field name="x_remito_proveedor" placeholder="N° remito del proveedor"/>
             </xpath>
         </field>
     </record>
