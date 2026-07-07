@@ -33,13 +33,13 @@
                         <field name="count_updated"/>
                     </group>
                     <field name="line_ids">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="cuit"/>
                             <field name="partner_id"/>
                             <field name="alicuota_anterior"/>
                             <field name="alicuota_nueva"/>
                             <field name="updated"/>
-                        </tree>
+                        </list>
                     </field>
                 </sheet>
             </form>
@@ -50,14 +50,14 @@
         <field name="name">arba.padron.import.tree</field>
         <field name="model">arba.padron.import</field>
         <field name="arch" type="xml">
-            <tree string="Importaciones de Padrón ARBA">
+            <list string="Importaciones de Padrón ARBA">
                 <field name="name"/>
                 <field name="tipo"/>
                 <field name="fecha_vigencia"/>
                 <field name="count_total"/>
                 <field name="count_updated"/>
                 <field name="create_date"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -71,7 +71,7 @@
     <record id="action_arba_padron_import" model="ir.actions.act_window">
         <field name="name">Importaciones de Padrón</field>
         <field name="res_model">arba.padron.import</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_arba_root"
