@@ -4,8 +4,8 @@ from odoo import _, api, fields, models
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    def _post_confirm(self):
-        res = super()._post_confirm()
+    def button_confirm(self):
+        res = super().button_confirm()
         for order in self:
             if order.incoterm_id and order.incoterm_id.code in ('FOB', 'CIF'):
                 self._create_draft_landed_cost(order)
