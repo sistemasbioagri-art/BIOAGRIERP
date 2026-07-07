@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_bioagri" model="ir.ui.view">
+        <field name="name">res.partner.form.bioagri</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='accounting']" position="inside">
+                <group name="bioagri_credit" string="Bioagri - Control de Crédito">
+                    <field name="x_situacion_5"/>
+                </group>
+                <group name="bioagri_arba" string="Bioagri - Padrón ARBA">
+                    <field name="x_alicuota_percepcion"/>
+                    <field name="x_alicuota_retencion"/>
+                    <field name="x_padron_vigencia"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

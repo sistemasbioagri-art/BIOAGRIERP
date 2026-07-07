@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_bioagri" model="ir.ui.view">
+        <field name="name">stock.picking.form.bioagri</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <group name="bioagri_logistics" string="Datos Logísticos (Bioagri)"
+                       attrs="{'invisible': [('picking_type_id.code', 'not in', ('outgoing', 'incoming'))]}">
+                    <field name="x_chofer_nombre"
+                           attrs="{'required': [('picking_type_id.code', '=', 'outgoing'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           placeholder="Nombre del chofer"/>
+                    <field name="x_chofer_dni"
+                           attrs="{'required': [('picking_type_id.code', '=', 'outgoing'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           placeholder="DNI"/>
+                    <field name="x_patente"
+                           attrs="{'required': [('picking_type_id.code', '=', 'outgoing'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           placeholder="Patente"/>
+                    <field name="x_transportista_id" placeholder="Empresa de transporte"/>
+                    <field name="x_remito_proveedor"
+                           attrs="{'required': [('picking_type_id.code', '=', 'incoming'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           placeholder="N° remito del proveedor"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
