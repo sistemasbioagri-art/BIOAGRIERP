@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_bioagri_cross_analysis,bioagri_cross_analysis,model_bioagri_cross_analysis,base.group_user,1,0,0,0
 access_arba_padron_import,arba.padron.import,model_arba_padron_import,base.group_user,1,0,0,0
 access_arba_padron_line,arba.padron.line,model_arba_padron_line,base.group_user,1,0,0,0
+access_arba_padron_import_wizard,arba.padron.import.wizard,model_arba_padron_import_wizard,base.group_user,1,1,1,1
