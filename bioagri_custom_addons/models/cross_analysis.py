@@ -36,8 +36,9 @@ class BioagriCrossAnalysis(models.Model):
                     SUM(sm.product_uom_qty) AS qty_delivered
                 FROM stock_move sm
                 JOIN stock_picking sp ON sp.id = sm.picking_id
+                JOIN stock_picking_type spt ON spt.id = sp.picking_type_id
                 WHERE sm.state = 'done'
-                  AND sp.picking_type_code = 'outgoing'
+                  AND spt.code = 'outgoing'
                 GROUP BY sm.partner_id, sm.product_id
             ),
             facturado AS (
