@@ -10,7 +10,7 @@ class StockPicking(models.Model):
     x_patente = fields.Char('Patente del Vehículo')
     x_transportista_id = fields.Many2one(
         'res.partner', string='Transportista',
-        domain="[('company_type', '=', 'company')]",
+        domain="[('is_company', '=', True)]",
     )
     x_remito_proveedor = fields.Char(
         'Remito del Proveedor',
