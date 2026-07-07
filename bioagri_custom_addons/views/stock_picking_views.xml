@@ -7,19 +7,19 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
                 <group name="bioagri_logistics" string="Datos Logísticos (Bioagri)"
-                       attrs="{'invisible': [('picking_type_id.code', 'not in', ('outgoing', 'incoming'))]}">
+                       invisible="picking_type_id.code not in ('outgoing', 'incoming')">
                     <field name="x_chofer_nombre"
-                           attrs="{'required': [('picking_type_id.code', '=', 'outgoing'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
                            placeholder="Nombre del chofer"/>
                     <field name="x_chofer_dni"
-                           attrs="{'required': [('picking_type_id.code', '=', 'outgoing'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
                            placeholder="DNI"/>
                     <field name="x_patente"
-                           attrs="{'required': [('picking_type_id.code', '=', 'outgoing'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           required="(picking_type_id.code == 'outgoing') and (state not in ('draft', 'cancel'))"
                            placeholder="Patente"/>
                     <field name="x_transportista_id" placeholder="Empresa de transporte"/>
                     <field name="x_remito_proveedor"
-                           attrs="{'required': [('picking_type_id.code', '=', 'incoming'), ('state', 'not in', ('draft', 'cancel'))]}"
+                           required="(picking_type_id.code == 'incoming') and (state not in ('draft', 'cancel'))"
                            placeholder="N° remito del proveedor"/>
                 </group>
             </xpath>

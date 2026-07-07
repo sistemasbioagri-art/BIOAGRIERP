@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount']" position="after">
-                <field name="x_base_retencion" attrs="{'invisible': [('x_base_retencion', '=', 0)]}"/>
-                <field name="x_retencion_ganancias" attrs="{'invisible': [('x_retencion_ganancias', '=', 0)]}"/>
+                <field name="x_base_retencion" invisible="x_base_retencion == 0"/>
+                <field name="x_retencion_ganancias" invisible="x_retencion_ganancias == 0"/>
             </xpath>
         </field>
     </record>
