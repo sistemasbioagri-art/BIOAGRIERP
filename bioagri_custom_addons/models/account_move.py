@@ -8,10 +8,10 @@ class AccountMove(models.Model):
     x_percepcion_iibb = fields.Float(
         string='Percepción IIBB',
         compute='_compute_percepcion_iibb',
-        store=True,
     )
 
-    @api.depends('invoice_line_ids', 'partner_id', 'move_type')
+    @api.depends('invoice_line_ids', 'partner_id', 'move_type',
+                 'partner_id.x_alicuota_percepcion')
     def _compute_percepcion_iibb(self):
         for move in self:
             move.x_percepcion_iibb = 0.0
@@ -56,23 +56,9 @@ class AccountMove(models.Model):
 
     def _apply_percepcion_line(self, move):
         perception_line = move.invoice_line_ids.filtered(
-            lambda l: l.display_type == 'line_note' and 'PERCEPCIÓN IIBB' in (l.name or '')
+            lambda l: 'PERCEPCIÓN IIBB' in (l.name or '')
         )
         if perception_line:
-            return
-        tax = self.env['account.tax'].search([
-            ('type_tax_use', '=', 'sale'),
-            ('amount', '=', 0),
-            ('company_id', '=', move.company_id.id),
-            ('name', 'ilike', 'percepción'),
-        ], limit=1)
-        if not tax:
-            tax = self.env['account.tax'].search([
-                ('type_tax_use', '=', 'sale'),
-                ('amount', '=', 0),
-                ('company_id', '=', move.company_id.id),
-            ], limit=1)
-        if not tax:
             return
         partner = move.partner_id.commercial_partner_id
         move.write({
@@ -80,8 +66,8 @@ class AccountMove(models.Model):
                 'name': 'PERCEPCIÓN IIBB (alíc. %s%%)' % partner.x_alicuota_percepcion,
                 'quantity': 1,
                 'price_unit': move.x_percepcion_iibb,
-                'display_type': 'line_note',
-                'tax_ids': [(6, 0, tax.ids)],
+                'display_type': 'product',
+                'tax_ids': [],
             })],
         })
 
