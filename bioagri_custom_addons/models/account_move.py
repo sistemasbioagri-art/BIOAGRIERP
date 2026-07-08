@@ -50,8 +50,6 @@ class AccountMove(models.Model):
                             partner.credit,
                         )
                     )
-            # ponytail: aplica percepción IIBB como línea de impuesto
-            # add when: se requiera configuración por producto o jurisdicción
             if move.move_type == 'out_invoice' and move.x_percepcion_iibb:
                 self._apply_percepcion_line(move)
         return super().action_post()
@@ -87,24 +85,26 @@ class AccountMove(models.Model):
             })],
         })
 
-    def _create_debit_note_for_exchange_diff(self, payment):
-        # ponytail: genera nota de débito por diferencia de cambio
-        # add when: se requiera integración con múltiples medios de pago
-        if payment.payment_type != 'inbound':
-            return
-        move = self
-        amount_diff = abs(move.amount_residual) if hasattr(move, 'amount_residual') else 0
+    def _create_debit_note_for_exchange_diff(self, amount_diff):
         if amount_diff < 0.01:
             return
-        invoice_line_vals = [{
+        iva_tax = self.env['account.tax'].search([
+            ('type_tax_use', '=', 'sale'),
+            ('amount', '=', 21),
+            ('company_id', '=', self.company_id.id),
+        ], limit=1)
+        invoice_lines = [(0, 0, {
             'name': 'Diferencia de Cambio (Nota de Débito automática)',
             'quantity': 1,
             'price_unit': amount_diff,
-        }]
+            'tax_ids': [(6, 0, iva_tax.ids)] if iva_tax else [],
+        })]
         debit_move = self.create({
             'move_type': 'out_invoice',
-            'partner_id': move.partner_id.id,
+            'partner_id': self.partner_id.id,
+            'invoice_origin': self.name,
             'invoice_date': fields.Date.today(),
-            'invoice_line_ids': [(0, 0, line) for line in invoice_line_vals],
+            'invoice_line_ids': invoice_lines,
         })
         debit_move.action_post()
+        return debit_move

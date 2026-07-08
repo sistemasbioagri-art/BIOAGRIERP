@@ -23,8 +23,6 @@ class AccountPayment(models.Model):
         help='Indica si este pago fue incluido en una exportación SIRE.',
     )
 
-    # ponytail: escalas fijas del Régimen 78 (RG 830 AFIP)
-    # add when: ARCA actualice las tablas de retención, convertirlas a configurables
     REGIMENES = {
         78: {
             'name': 'Régimen 78 - Bienes Muebles (RG 830)',
@@ -63,8 +61,6 @@ class AccountPayment(models.Model):
         if not payments:
             raise ValidationError(_('No hay pagos con retenciones pendientes de exportar SIRE.'))
 
-        # ponytail: formato SIRE simplificado
-        # add when: ARCA publique un nuevo diseño de registro
         buffer = io.StringIO()
         writer = csv.writer(buffer, delimiter='|')
         for pago in payments:
@@ -91,3 +87,26 @@ class AccountPayment(models.Model):
             'url': '/web/content/%s?download=true' % attachment.id,
             'target': 'self',
         }
+
+    def action_post(self):
+        res = super().action_post()
+        for payment in self:
+            if payment.payment_type != 'inbound':
+                continue
+            for line in payment.move_id.line_ids:
+                if line.matched_debit_ids:
+                    for matched in line.matched_debit_ids:
+                        inv = matched.move_id
+                        if inv.move_type != 'out_invoice':
+                            continue
+                        rate_payment = payment.move_id.line_ids[0].currency_id.rate or 1.0
+                        rate_invoice = inv.currency_id.rate or 1.0
+                        if rate_payment == rate_invoice:
+                            continue
+                        inv_amount = inv.amount_total
+                        paid_amount_company = abs(matched.amount)
+                        diff = paid_amount_company - inv_amount
+                        if abs(diff) < 0.01:
+                            continue
+                        inv._create_debit_note_for_exchange_diff(abs(diff))
+        return res
