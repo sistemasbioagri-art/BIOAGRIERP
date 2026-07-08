@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="report_invoice_document_bioagri" model="ir.ui.view">
-        <field name="name">report.invoice.document.bioagri</field>
-        <field name="model">account.move</field>
-        <field name="inherit_id" ref="l10n_ar.report_invoice_document"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@id='total']" position="before">
-                <div t-if="o.x_percepcion_iibb > 0" class="mb-2 text-end">
-                    <strong>Percepción IIBB: </strong>
-                    <span t-out="o.x_percepcion_iibb"
-                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                </div>
-            </xpath>
-        </field>
-    </record>
+    <!-- Hereda de la plantilla base de account, NO de l10n_ar -->
+    <template id="report_invoice_document_bioagri"
+              inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='total']" position="before">
+            <div t-if="o.x_percepcion_iibb > 0" class="mb-2 text-end">
+                <strong>Percepción IIBB: </strong>
+                <span t-out="o.x_percepcion_iibb"
+                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+            </div>
+        </xpath>
+    </template>
 </odoo>
