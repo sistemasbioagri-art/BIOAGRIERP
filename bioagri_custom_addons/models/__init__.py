@@ -6,3 +6,4 @@ from . import account_payment
 from . import purchase_order
 from . import cross_analysis
 from . import arba_padron
+from . import currency_rate_updater

@@ -3,12 +3,14 @@
     <!-- Hereda de la plantilla base de account, NO de l10n_ar -->
     <template id="report_invoice_document_bioagri"
               inherit_id="account.report_invoice_document">
-        <xpath expr="//div[@id='total']//table" position="before">
-            <div t-if="o.x_percepcion_iibb > 0" class="text-end mb-2">
-                <strong>Percepción IIBB: </strong>
-                <span t-out="o.x_percepcion_iibb"
-                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-            </div>
+        <xpath expr="//div[@id='total']//table/t[@t-call='account.document_tax_totals']" position="before">
+            <tr t-if="o.x_percepcion_iibb > 0">
+                <td><span>Percepción IIBB</span></td>
+                <td class="text-end">
+                    <span t-out="o.x_percepcion_iibb"
+                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                </td>
+            </tr>
         </xpath>
     </template>
 </odoo>

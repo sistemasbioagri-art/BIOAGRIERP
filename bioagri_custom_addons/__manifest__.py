@@ -13,6 +13,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
 - Precarga de costos de importación (Landed Costs) para FOB/CIF
 - Retención de Ganancias por escala AFIP + exportación SIRE .txt
 - Informe cruzado de stock, ventas y facturación
+- Actualización automática de cotización USD (BCRA)
 """,
     'author': 'Bioagri S.A.',
     'website': '',
@@ -38,6 +39,8 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'reports/purchase_order_report.xml',
         'reports/invoice_report.xml',
         'views/purchase_supplierinfo_views.xml',
+        'views/currency_rate_updater_views.xml',
+        'data/ir_cron.xml',
     ],
     'installable': True,
     'application': False,
