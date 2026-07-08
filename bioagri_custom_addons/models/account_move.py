@@ -50,26 +50,7 @@ class AccountMove(models.Model):
                             partner.credit,
                         )
                     )
-            if move.move_type == 'out_invoice' and move.x_percepcion_iibb:
-                self._apply_percepcion_line(move)
         return super().action_post()
-
-    def _apply_percepcion_line(self, move):
-        perception_line = move.invoice_line_ids.filtered(
-            lambda l: 'PERCEPCIÓN IIBB' in (l.name or '')
-        )
-        if perception_line:
-            return
-        partner = move.partner_id.commercial_partner_id
-        move.write({
-            'invoice_line_ids': [(0, 0, {
-                'name': 'PERCEPCIÓN IIBB (alíc. %s%%)' % partner.x_alicuota_percepcion,
-                'quantity': 1,
-                'price_unit': move.x_percepcion_iibb,
-                'display_type': 'product',
-                'tax_ids': [],
-            })],
-        })
 
     def _create_debit_note_for_exchange_diff(self, amount_diff):
         if amount_diff < 0.01:
