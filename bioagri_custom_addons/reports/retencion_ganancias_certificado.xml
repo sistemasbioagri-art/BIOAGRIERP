@@ -79,7 +79,7 @@
                                         <span t-esc=" '%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_regimen_aplicado.minimo_no_imponible).replace(',', '.'))"/>
                                     </p>
                                     <p style="margin: 2px 0;" t-if="not o.x_regimen_aplicado.usa_escala">
-                                        <strong>Alicuota:</strong> <span t-esc="'%.2f%%' % o.x_regimen_aplicado.alicuota_fija"/>
+                                        <strong>Alicuota:</strong> <span t-esc="str(round(o.x_regimen_aplicado.alicuota_fija, 2)) + ' %'"/>
                                     </p>
                                     <p style="margin: 2px 0;" t-if="o.x_regimen_aplicado.usa_escala">
                                         <strong> Tipo:</strong> Escala Progresiva
