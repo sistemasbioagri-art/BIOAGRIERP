@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="paperformat_remito_bioagri" model="report.paperformat">
         <field name="name">Remito Bioagri</field>
@@ -12,7 +11,6 @@
         <field name="header_spacing">0</field>
     </record>
 
-    <!-- Override the standard stock delivery report to use our custom template -->
     <record id="stock.action_report_delivery" model="ir.actions.report">
         <field name="report_name">bioagri_custom_addons.report_delivery_document_bioagri</field>
         <field name="paperformat_id" ref="bioagri_custom_addons.paperformat_remito_bioagri"/>
@@ -25,10 +23,8 @@
                     body, .container, .o_body_html, .o_body_pdf, main, #wrapwrap { padding: 0 !important; margin: 0 !important; }
                 </style>
                 <div class="page" style="font-family: Arial, Helvetica, sans-serif; color: #333; font-size: 10px; padding: 8px;">
-                    <!-- HEADER ROW: Company + Document -->
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
                         <tr>
-                            <!-- LEFT: Company Info -->
                             <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px;">
                                 <table style="width: 100%; border: none;">
                                     <tr>
@@ -43,15 +39,14 @@
                                             <p style="margin: 1px 0;">Buenos Aires - Argentina</p>
                                             <p style="margin: 1px 0;">IVA Responsable Inscripto</p>
                                             <p style="margin: 1px 0;">C.U.I.T. 30593174057</p>
-                                            <p style="margin: 1px 0;">N&amp;deg; IIBB 30593174057/902</p>
+                                            <p style="margin: 1px 0;">N&#176; IIBB 30593174057/902</p>
                                             <p style="margin: 1px 0;">Inicio de Actividades: 20.10.1983</p>
-                                            <p style="margin: 1px 0;">Tel&amp;eacute;fono: 54 2477-409400</p>
+                                            <p style="margin: 1px 0;">Tel&#233;fono: 54 2477-409400</p>
                                             <p style="margin: 1px 0;">Rubro:</p>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
-                            <!-- RIGHT: Document Info -->
                             <td style="width: 45%; vertical-align: top; border: none; text-align: right;">
                                 <table style="border-collapse: collapse; float: right;">
                                     <tr>
@@ -63,7 +58,7 @@
                                         <td style="padding-left: 10px; vertical-align: top; text-align: left;">
                                             <p style="margin: 0; font-size: 16px; font-weight: bold;">REMITO</p>
                                             <p style="margin: 2px 0; font-size: 8px; color: #666;">DOCUMENTO NO VALIDO COMO FACTURA</p>
-                                            <p style="margin: 2px 0; font-size: 12px;">N&amp;deg; <span t-esc="o.name or ''"/></p>
+                                            <p style="margin: 2px 0; font-size: 12px;">N&#176; <span t-esc="o.name or ''"/></p>
                                             <p style="margin: 2px 0; font-size: 8px;">Comprobante triplicado</p>
                                             <p style="margin: 2px 0; font-size: 8px;">Hoja: 1/1</p>
                                         </td>
@@ -73,10 +68,8 @@
                         </tr>
                     </table>
 
-                    <!-- SECOND ROW: Cliente + Info expedicion -->
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
                         <tr>
-                            <!-- LEFT: Cliente + Direccion envio -->
                             <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px; font-size: 9px;">
                                 <div style="margin-bottom: 4px;">
                                     <p style="margin: 0 0 2px 0; font-weight: bold;">Cliente</p>
@@ -89,7 +82,7 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <p style="margin: 0 0 2px 0; font-weight: bold;">Direcci&amp;oacute;n de env&amp;oacute;o</p>
+                                    <p style="margin: 0 0 2px 0; font-weight: bold;">Direcci&#243;n de env&#237;o</p>
                                     <p style="margin: 0;" t-esc="o.partner_id.name or ''"/>
                                     <p style="margin: 0;" t-if="o.partner_id.street">
                                         <span t-esc="o.partner_id.street"/>
@@ -98,16 +91,15 @@
                                     </p>
                                 </div>
                             </td>
-                            <!-- RIGHT: Info de expedicion -->
                             <td style="width: 45%; vertical-align: top; border: none; font-size: 9px;">
-                                <p style="margin: 0 0 3px 0; font-weight: bold;">Informaci&amp;oacute;n de expedici&amp;oacute;n</p>
+                                <p style="margin: 0 0 3px 0; font-weight: bold;">Informaci&#243;n de expedici&#243;n</p>
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <tr>
                                         <td style="border: none; padding: 1px 0; width: 45%;">Documento/Fecha</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.origin or ''"/>
                                     </tr>
                                     <tr>
-                                        <td style="border: none; padding: 1px 0;">N&amp;deg; Transporte/Fecha</td>
+                                        <td style="border: none; padding: 1px 0;">N&#176; Transporte/Fecha</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;">
                                             <span t-if="o.x_patente" t-esc="o.x_patente"/>
                                             <span t-if="o.date_done"> / <span t-esc="o.date_done.strftime('%d.%m.%Y') if o.date_done else ''"/></span>
@@ -118,11 +110,11 @@
                                         <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.origin or ''"/>
                                     </tr>
                                     <tr>
-                                        <td style="border: none; padding: 1px 0;">N&amp;uacute;mero de cliente</td>
+                                        <td style="border: none; padding: 1px 0;">N&#250;mero de cliente</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.partner_id.ref or ''"/>
                                     </tr>
                                     <tr>
-                                        <td style="border: none; padding: 1px 0;">N&amp;uacute;mero de destinatario</td>
+                                        <td style="border: none; padding: 1px 0;">N&#250;mero de destinatario</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.partner_id.ref or ''"/>
                                     </tr>
                                     <tr>
@@ -138,15 +130,13 @@
                         </tr>
                     </table>
 
-                    <!-- THIRD ROW: Condiciones + Transporte -->
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
                         <tr>
-                            <!-- LEFT: Condiciones -->
                             <td style="width: 35%; vertical-align: top; border: none; padding-right: 10px; font-size: 9px;">
                                 <p style="margin: 0 0 3px 0; font-weight: bold;">Condiciones</p>
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <tr>
-                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Expedici&amp;oacute;n:</td>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Expedici&#243;n:</td>
                                         <td style="border: none; padding: 1px 0;">MERCADERIA EN CONSIGNACION</td>
                                     </tr>
                                     <tr>
@@ -154,20 +144,19 @@
                                         <td style="border: none; padding: 1px 0;"></td>
                                     </tr>
                                     <tr>
-                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Dep&amp;oacute;sito origen</td>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Dep&#243;sito origen</td>
                                         <td style="border: none; padding: 1px 0;" t-if="o.company_id.street">
                                             <span t-esc="o.company_id.street"/> - CP. <span t-esc="o.company_id.zip or ''"/>
                                         </td>
                                     </tr>
                                 </table>
-                                <p style="margin: 4px 0 0 0; font-weight: bold;">Informaci&amp;oacute;n</p>
+                                <p style="margin: 4px 0 0 0; font-weight: bold;">Informaci&#243;n</p>
                             </td>
-                            <!-- RIGHT: Transporte -->
                             <td style="width: 65%; vertical-align: top; border: none; font-size: 9px;">
                                 <p style="margin: 0 0 3px 0; font-weight: bold;">TRANSPORTE</p>
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <tr>
-                                        <td style="border: none; padding: 1px 0; width: 30%; font-weight: bold;">Cami&amp;oacute;n:</td>
+                                        <td style="border: none; padding: 1px 0; width: 30%; font-weight: bold;">Cam&#237;o:</td>
                                         <td style="border: none; padding: 1px 0;" t-esc="o.x_patente or ''"/>
                                         <td style="border: none; padding: 1px 0; text-align: right; font-weight: bold;">Cot.</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;"></td>
@@ -201,7 +190,6 @@
                         </tr>
                     </table>
 
-                    <!-- EMERGENCY CONTACT BAR -->
                     <div style="background: #FFF9C4; padding: 6px 10px; margin-bottom: 6px; text-align: center; border: 1px solid #F9A825;">
                         <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
                             EMERGENCIAS TOXICOLOGICAS : 0800-888-8694 (24 hs)
@@ -211,14 +199,13 @@
                         </p>
                     </div>
 
-                    <!-- PRODUCT TABLE -->
-                    <p style="margin: 0 0 3px 0; font-weight: bold; font-size: 9px;">Detalles de expedici&amp;oacute;n</p>
+                    <p style="margin: 0 0 3px 0; font-weight: bold; font-size: 9px;">Detalles de expedici&#243;n</p>
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px; border: 1px solid #ccc;">
                         <thead>
                             <tr style="background: #f0f0f0;">
-                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Posici&amp;oacute;n</th>
+                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Posici&#243;n</th>
                                 <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Material</th>
-                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Descripci&amp;oacute;n</th>
+                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Descripci&#243;n</th>
                                 <th style="padding: 4px 6px; text-align: right; border: 1px solid #ccc; font-size: 9px;">Cantidad</th>
                                 <th style="padding: 4px 6px; text-align: right; border: 1px solid #ccc; font-size: 9px;">Cant alternativa</th>
                             </tr>
@@ -240,7 +227,6 @@
                         </tbody>
                     </table>
 
-                    <!-- LOT &amp; EXPIRY INFO -->
                     <t t-set="has_lots" t-value="any(move.move_line_ids.lot_id or move.move_line_ids.lot_name for move in o.move_ids_without_package)"/>
                     <div t-if="has_lots" style="margin-bottom: 6px; font-size: 9px;">
                         <t t-foreach="o.move_ids_without_package" t-as="move">
@@ -257,36 +243,33 @@
                         </t>
                     </div>
 
-                    <!-- DECLARED VALUE -->
                     <div style="margin-bottom: 6px; font-size: 9px;">
                         <p style="margin: 1px 0;"><strong>Valor declarado:</strong></p>
                         <p style="margin: 1px 0;"><strong>Cant de bultos:</strong> 0</p>
                         <p style="margin: 1px 0;"><strong>Cant de pallets:</strong></p>
                     </div>
 
-                    <!-- CAI + Footer -->
                     <div style="border-top: 1px solid #ccc; padding-top: 4px; margin-bottom: 6px; font-size: 8px;">
-                        <span>N&amp;deg; CAI: 51517216351695</span>
+                        <span>N&#176; CAI: 51517216351695</span>
                         <span style="float: right;">Fecha de vencimiento: 20.06.2026</span>
                     </div>
 
-                    <!-- TERMS + SIGNATURE -->
                     <table style="width: 100%; border-collapse: collapse; font-size: 7px;">
                         <tr>
                             <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px;">
-                                <p style="margin: 0 0 2px 0;">1. Rizobacter Argentina S.A. entrega toda la mercaderia en perfectas condiciones y no acepta reclamos o responsabilidad por p&amp;eacute;rdidas o da&amp;ntilde;os durante el viaje.</p>
-                                <p style="margin: 0 0 2px 0;">2. Cualquier reclamo a Rizobacter Argentina S.A. debe interponerse dentro de las 48 hs. inmediatas posteriores a la fecha de recepci&amp;oacute;n de mercer&amp;iacute;a.</p>
+                                <p style="margin: 0 0 2px 0;">1. Rizobacter Argentina S.A. entrega toda la mercaderia en perfectas condiciones y no acepta reclamos o responsabilidad por p&#233;rdidas o da&#241;os durante el viaje.</p>
+                                <p style="margin: 0 0 2px 0;">2. Cualquier reclamo a Rizobacter Argentina S.A. debe interponerse dentro de las 48 hs. inmediatas posteriores a la fecha de recepci&#243;n de mercader&#237;a.</p>
                                 <p style="margin: 0 0 2px 0;">3. El transportista reconoce en forma expresa haber recibido de Rizobacter las cartillas de emergencia correspondientes a los productos remitidos.</p>
-                                <p style="margin: 0 0 2px 0;">4. El transportista asume la obligaci&amp;oacute;n de descontaminar a su exclusivo cargo, costo y responsabilidad la unidad completa utilizada para transportar mercer&amp;iacute;a, en forma inmediata posterior a la descarga de misma mercer&amp;iacute;a, en un todo conforme con la Resoluci&amp;oacute;n N&amp;deg;779/95.</p>
-                                <p style="margin: 0 0 2px 0;">5. En caso de devoluci&amp;oacute;n de los productos, el dador de carga estar&amp;aacute; obligado a cumplir las causales establecidas en los arts. 11, 41 y ss. de la Ley 2026-R (antes 7032) de Biocidas y Decreto Reglamentario N&amp;deg; 1567/2013, de la Provincia de Chaco.</p>
+                                <p style="margin: 0 0 2px 0;">4. El transportista asume la obligaci&#243;n de descontaminar a su exclusivo cargo, costo y responsabilidad la unidad completa utilizada para transportar mercader&#237;a, en forma inmediata posterior a la descarga de misma mercader&#237;a, en un todo conforme con la Resoluci&#243;n N&#176;779/95.</p>
+                                <p style="margin: 0 0 2px 0;">5. En caso de devoluci&#243;n de los productos, el dador de carga estar&#225; obligado a cumplir las causales establecidas en los arts. 11, 41 y ss. de la Ley 2026-R (antes 7032) de Biocidas y Decreto Reglamentario N&#176; 1567/2013, de la Provincia de Chaco.</p>
                             </td>
                             <td style="width: 45%; vertical-align: top; border: none; text-align: center;">
                                 <p style="margin: 0 0 3px 0; font-weight: bold; font-size: 9px;">RECIBI CONFORME</p>
                                 <p style="margin: 0 0 2px 0; font-size: 8px;">FECHA DE ENTREGA:</p>
                                 <div style="margin-top: 40px; border-top: 1px solid #333; padding-top: 3px;">
                                     <p style="margin: 0; font-size: 8px;"><strong>Firma</strong></p>
-                                    <p style="margin: 0; font-size: 7px;">Aclaraci&amp;oacute;n Firma</p>
-                                    <p style="margin: 0; font-size: 7px;">Tipo DOC. N&amp;uacute;mero DOC.</p>
+                                    <p style="margin: 0; font-size: 7px;">Aclaraci&#243;n Firma</p>
+                                    <p style="margin: 0; font-size: 7px;">Tipo DOC. N&#250;mero DOC.</p>
                                 </div>
                             </td>
                         </tr>
