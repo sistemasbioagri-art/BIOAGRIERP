@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_remito_bioagri" model="report.paperformat">
+        <field name="name">Remito Bioagri</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+    </record>
+
+    <record id="action_report_delivery_bioagri" model="ir.actions.report">
+        <field name="name">Remito de Entrega</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bioagri_custom_addons.report_delivery_document_bioagri</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="bioagri_custom_addons.paperformat_remito_bioagri"/>
+    </record>
+
+    <template id="report_delivery_document_bioagri">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.picking_type_id.code == 'outgoing'">
+                    <style>
+                        body, .container, .o_body_html, .o_body_pdf, main, #wrapwrap { padding: 0 !important; margin: 0 !important; }
+                        .remito-page { font-family: Arial, Helvetica, sans-serif; color: #333; }
+                        .remito-table { width: 100%; border-collapse: collapse; }
+                        .remito-th { background: #2E7D32; color: white; padding: 6px 8px; text-align: left; border: 1px solid #1b5e20; font-size: 10px; }
+                        .remito-td { padding: 5px 8px; border: 1px solid #ddd; font-size: 10px; }
+                        .remito-section-title { font-size: 9px; color: #888; text-transform: uppercase; margin: 0 0 3px 0; }
+                        .remito-field { margin: 1px 0; font-size: 10px; }
+                        .remito-label { font-weight: bold; color: #2E7D32; }
+                    </style>
+                    <div class="page remito-page" style="padding: 5px;">
+                        <!-- HEADER: Company Info + Document Info -->
+                        <table class="remito-table" style="margin-bottom: 8px;">
+                            <tr>
+                                <!-- Left: Company Info -->
+                                <td style="width: 55%; vertical-align: top; padding-right: 10px; border: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="border: none; padding: 0;">
+                                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 45px; max-width: 120px;" alt="Logo"/>
+                                            </td>
+                                            <td style="border: none; padding: 0; vertical-align: top;">
+                                                <p style="margin: 0; font-size: 14px; font-weight: bold; color: #2E7D32;" t-esc="o.company_id.name"/>
+                                                <p style="margin: 1px 0; font-size: 9px;" t-if="o.company_id.vat">
+                                                    C.U.I.T. <span t-esc="o.company_id.vat"/>
+                                                </p>
+                                                <p style="margin: 1px 0; font-size: 9px;" t-if="o.company_id.street">
+                                                    <span t-esc="o.company_id.street"/>
+                                                    <span t-if="o.company_id.city">, <span t-esc="o.company_id.city"/></span>
+                                                    <span t-if="o.company_id.state_id"> - <span t-esc="o.company_id.state_id.name"/></span>
+                                                </p>
+                                                <p style="margin: 1px 0; font-size: 9px;" t-if="o.company_id.country_id">
+                                                    <span t-esc="o.company_id.country_id.name"/>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!-- Right: Document Info -->
+                                <td style="width: 45%; vertical-align: top; border: none; text-align: right;">
+                                    <div style="border: 2px solid #2E7D32; padding: 8px; text-align: center; display: inline-block;">
+                                        <p style="margin: 0; font-size: 18px; font-weight: bold; color: #2E7D32;">REMITO</p>
+                                        <p style="margin: 2px 0; font-size: 8px; color: #666;">DOCUMENTO NO VALIDO COMO FACTURA</p>
+                                        <p style="margin: 2px 0; font-size: 11px;">
+                                            N° <span t-esc="o.name or ''"/>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Customer / Shipping Info + Transport Info -->
+                        <table class="remito-table" style="margin-bottom: 8px;">
+                            <tr>
+                                <!-- Left: Customer + Shipping -->
+                                <td style="width: 55%; vertical-align: top; padding-right: 10px; border: none;">
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 3px; margin-bottom: 5px; border-left: 3px solid #2E7D32;">
+                                        <p class="remito-section-title">Cliente</p>
+                                        <p class="remito-field"><strong t-esc="o.partner_id.name or ''"/></p>
+                                        <p class="remito-field" t-if="o.partner_id.vat">C.U.I.T. <span t-esc="o.partner_id.vat"/></p>
+                                        <p class="remito-field" t-if="o.partner_id.street">
+                                            <span t-esc="o.partner_id.street"/>
+                                            <span t-if="o.partner_id.city">, <span t-esc="o.partner_id.city"/></span>
+                                        </p>
+                                    </div>
+                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 3px; border-left: 3px solid #1565C0;">
+                                        <p class="remito-section-title">Direccion de Envio</p>
+                                        <p class="remito-field"><strong t-esc="o.partner_id.name or ''"/></p>
+                                        <p class="remito-field" t-if="o.partner_id.street">
+                                            <span t-esc="o.partner_id.street"/>
+                                            <span t-if="o.partner_id.city">, <span t-esc="o.partner_id.city"/></span>
+                                        </p>
+                                    </div>
+                                </td>
+                                <!-- Right: Transport + Dates -->
+                                <td style="width: 45%; vertical-align: top; border: none;">
+                                    <div style="background: #fff3e0; padding: 8px; border-radius: 3px; border-left: 3px solid #E65100;">
+                                        <p class="remito-section-title">Transporte</p>
+                                        <p class="remito-field" t-if="o.x_patente"><span class="remito-label">Patente:</span> <span t-esc="o.x_patente"/></p>
+                                        <p class="remito-field" t-if="o.x_chofer_nombre"><span class="remito-label">Chofer:</span> <span t-esc="o.x_chofer_nombre"/></p>
+                                        <p class="remito-field" t-if="o.x_chofer_dni"><span class="remito-label">DNI:</span> <span t-esc="o.x_chofer_dni"/></p>
+                                        <p class="remito-field" t-if="o.x_transportista_id"><span class="remito-label">Transportista:</span> <span t-esc="o.x_transportista_id.name"/></p>
+                                    </div>
+                                    <div style="background: #e8f5e9; padding: 8px; border-radius: 3px; border-left: 3px solid #2E7D32; margin-top: 5px;">
+                                        <p class="remito-section-title">Fechas</p>
+                                        <p class="remito-field" t-if="o.date_done"><span class="remito-label">Fecha de Entrega:</span> <span t-esc="o.date_done.strftime('%d/%m/%Y') if o.date_done else ''"/></p>
+                                        <p class="remito-field" t-if="o.origin"><span class="remito-label">Origen:</span> <span t-esc="o.origin"/></p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Emergency Contact -->
+                        <div style="background: #FFF9C4; padding: 6px 10px; border-radius: 3px; margin-bottom: 8px; text-align: center; border: 1px solid #F9A825;">
+                            <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
+                                EMERGENCIAS TOXICOLOGICAS: 0800-888-8694 (24 hs)
+                            </p>
+                        </div>
+
+                        <!-- Product Details Table -->
+                        <p class="remito-section-title" style="margin-bottom: 3px;">Detalles de Expedicion</p>
+                        <table class="remito-table" style="margin-bottom: 8px;">
+                            <thead>
+                                <tr>
+                                    <th class="remito-th" style="width: 8%;">Pos.</th>
+                                    <th class="remito-th" style="width: 15%;">Material</th>
+                                    <th class="remito-th" style="width: 30%;">Descripcion</th>
+                                    <th class="remito-th" style="width: 12%; text-align: right;">Cantidad</th>
+                                    <th class="remito-th" style="width: 15%; text-align: right;">Cant. Alternativa</th>
+                                    <th class="remito-th" style="width: 20%;">Lote</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.move_ids_without_package" t-as="move">
+                                    <tr t-att-style="'background: #f5f5f5;' if move_index % 2 == 0 else ''">
+                                        <td class="remito-td" t-esc="move_index + 1"/>
+                                        <td class="remito-td" t-esc="move.product_id.default_code or ''"/>
+                                        <td class="remito-td" t-esc="move.product_id.name or ''"/>
+                                        <td class="remito-td" style="text-align: right;">
+                                            <span t-esc="'%s %s' % (move.product_uom_qty, move.product_uom.name)"/>
+                                        </td>
+                                        <td class="remito-td" style="text-align: right;">
+                                            <span t-if="move.product_uom_qty != move.quantity" t-esc="'%s %s' % (move.quantity, move.product_uom.name)"/>
+                                        </td>
+                                        <td class="remito-td">
+                                            <t t-foreach="move.move_line_ids" t-as="ml">
+                                                <span t-if="ml.lot_id" t-esc="ml.lot_id.name"/>
+                                                <span t-if="ml.lot_name" t-esc="ml.lot_name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Lot & Expiry Info (if tracked) -->
+                        <t t-set="has_lots" t-value="any(move.move_line_ids.lot_id or move.move_line_ids.lot_name for move in o.move_ids_without_package)"/>
+                        <div t-if="has_lots" style="background: #e8f5e9; padding: 6px 10px; border-radius: 3px; margin-bottom: 8px; border: 1px solid #c8e6c9;">
+                            <p class="remito-section-title">Lotes y Vencimientos</p>
+                            <t t-foreach="o.move_ids_without_package" t-as="move">
+                                <t t-foreach="move.move_line_ids" t-as="ml">
+                                    <p class="remito-field" t-if="ml.lot_id or ml.lot_name">
+                                        <span class="remito-label">Lote:</span>
+                                        <span t-esc="ml.lot_id.name or ml.lot_name or ''"/>
+                                        <span t-if="ml.lot_id.x_date_of_expiration or ml.lot_id.life_date">
+                                            | <span class="remito-label">Vence:</span>
+                                            <span t-esc="(ml.lot_id.x_date_of_expiration or ml.lot_id.life_date).strftime('%d/%m/%Y')"/>
+                                        </span>
+                                    </p>
+                                </t>
+                            </t>
+                        </div>
+
+                        <!-- Footer: Terms + Signature -->
+                        <div style="margin-top: 10px;">
+                            <table class="remito-table" style="margin-bottom: 8px;">
+                                <tr>
+                                    <td style="width: 50%; vertical-align: bottom; border: none; padding-right: 10px;">
+                                        <p style="margin: 0 0 2px 0; font-size: 8px; color: #666;">
+                                            1. La mercaderia se entrega en perfectas condiciones. Reclamos dentro de 48hs.
+                                        </p>
+                                        <p style="margin: 0 0 2px 0; font-size: 8px; color: #666;">
+                                            2. El transportista reconoce haber recibido las cartillas de emergencia.
+                                        </p>
+                                        <p style="margin: 0 0 2px 0; font-size: 8px; color: #666;">
+                                            3. Descontaminar la unidad conforme Res. 779/95.
+                                        </p>
+                                    </td>
+                                    <td style="width: 50%; vertical-align: bottom; border: none; text-align: center;">
+                                        <div style="margin-top: 60px; border-top: 1px solid #333; padding-top: 3px;">
+                                            <p style="margin: 0; font-size: 9px;"><strong>Firma y Aclaracion</strong></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
