@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="paperformat_retencion_ganancias" model="report.paperformat">
+        <field name="name">Certificado Retención Ganancias</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+    </record>
+
     <record id="report_retencion_ganancias" model="ir.actions.report">
         <field name="name">Certificado de Retención de Ganancias</field>
         <field name="model">account.payment</field>
@@ -7,6 +19,7 @@
         <field name="report_name">bioagri_custom_addons.report_retencion_ganancias_certificado</field>
         <field name="binding_model_id" ref="account.model_account_payment"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="bioagri_custom_addons.paperformat_retencion_ganancias"/>
     </record>
 
     <record id="action_pagos_con_retencion" model="ir.actions.act_window">
@@ -26,14 +39,11 @@
 
     <template id="report_retencion_ganancias_certificado">
         <t t-call="web.html_container">
-            <t t-set="head">
-                <style>
-                    @page { size: A4; margin: 10mm 15mm 10mm 15mm; }
-                    .page { padding: 0 !important; margin: 0 !important; }
-                </style>
-            </t>
             <t t-foreach="docs" t-as="o">
                 <t t-if="o.x_retencion_ganancias > 0">
+                    <style>
+                        body, .container, .o_body_html, .o_body_pdf, main, #wrapwrap { padding: 0 !important; margin: 0 !important; }
+                    </style>
                     <div class="page" style="font-family: Arial, Helvetica, sans-serif; color: #333;">
                         <div style="border-bottom: 3px solid #2E7D32; padding-bottom: 10px; margin-bottom: 15px;">
                             <h1 style="text-align: center; color: #2E7D32; margin: 0; font-size: 22px;">
@@ -138,14 +148,14 @@
                             </p>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between; margin-top: 60px;">
+                        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
                             <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; min-height: 50px; margin-bottom: 5px;"></div>
+                                <div style="border-top: 2px solid #333; min-height: 30px; margin-bottom: 5px;"></div>
                                 <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
                                 <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
                             </div>
                             <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; min-height: 50px; margin-bottom: 5px;"></div>
+                                <div style="border-top: 2px solid #333; min-height: 30px; margin-bottom: 5px;"></div>
                                 <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
                                 <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
                             </div>
