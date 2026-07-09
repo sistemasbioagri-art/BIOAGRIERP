@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Hereda de la plantilla base de account, NO de l10n_ar -->
     <template id="report_invoice_document_bioagri"
               inherit_id="account.report_invoice_document">
         <xpath expr="//div[@id='total']//table/t[@t-call='account.document_tax_totals']" position="before">
             <tr t-if="o.x_percepcion_iibb > 0">
-                <td><span>Percepción IIBB</span></td>
+                <td><span>Percepci&oacute;n IIBB</span></td>
                 <td class="text-end">
                     <span t-out="o.x_percepcion_iibb"
                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                 </td>
             </tr>
+        </xpath>
+
+        <xpath expr="//div[hasclass('page')]" position="attributes">
+            <attribute name="t-attf-style">font-family: Arial, Helvetica, sans-serif; color: #333;</attribute>
+        </xpath>
+
+        <xpath expr="//h2[@t-if='o.name']/.." position="before">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <tr>
+                    <td style="width: 30%; vertical-align: middle; text-align: left;">
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 60px; max-width: 150px;" alt="Logo"/>
+                    </td>
+                    <td style="width: 70%; vertical-align: middle; text-align: right;">
+                        <h1 style="color: #2E7D32; margin: 0; font-size: 22px;">
+                            FACTURA
+                        </h1>
+                        <p style="color: #666; margin: 5px 0 0 0; font-size: 12px;">
+                            N&deg; <span t-field="o.l10n_latam_document_number or o.name"/>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <div style="border-bottom: 3px solid #2E7D32; margin-bottom: 15px;"></div>
         </xpath>
     </template>
 </odoo>
