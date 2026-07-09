@@ -20,3 +20,9 @@ class ResPartner(models.Model):
         string='Vigencia del Padrón',
         help='Fecha hasta la cual están vigentes las alícuotas del padrón.',
     )
+    x_regimen_ganancias = fields.Many2one(
+        'x_ganancias.regimen',
+        string='Régimen Retención Ganancias',
+        help='Régimen de Retención de Ganancias asignado al proveedor. '
+             'Solo aplica para Responsables Inscriptos.',
+    )

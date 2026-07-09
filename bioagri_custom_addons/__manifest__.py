@@ -11,7 +11,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
 - Remito de proveedor obligatorio en recepciones de compra
 - Código de producto del proveedor en PDF de orden de compra
 - Precarga de costos de importación (Landed Costs) para FOB/CIF
-- Retención de Ganancias por escala AFIP + exportación SIRE .txt
+- Retención de Ganancias RG 830 con regímenes configurables + SIRE .txt + Certificado PDF
 - Informe cruzado de stock, ventas y facturación
 - Actualización automática de cotización USD (BCRA)
 """,
@@ -40,6 +40,10 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'reports/invoice_report.xml',
         'views/purchase_supplierinfo_views.xml',
         'views/currency_rate_updater_views.xml',
+        'views/ganancias_regimen_views.xml',
+        'views/ganancias_escala_views.xml',
+        'views/res_company_views.xml',
+        'reports/retencion_ganancias_certificado.xml',
         'data/ir_cron.xml',
     ],
     'installable': True,

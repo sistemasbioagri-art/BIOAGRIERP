@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ganancias_escala_form" model="ir.ui.view">
+        <field name="name">x_ganancias.escala.form</field>
+        <field name="model">x_ganancias.escala</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Rango">
+                            <field name="regimen_id"/>
+                            <field name="monto_desde"/>
+                            <field name="monto_hasta"/>
+                        </group>
+                        <group string="Cálculo">
+                            <field name="monto_fijo"/>
+                            <field name="porcentaje"/>
+                            <field name="sobre_excedente"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ganancias_escala_list" model="ir.ui.view">
+        <field name="name">x_ganancias.escala.list</field>
+        <field name="model">x_ganancias.escala</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="regimen_id"/>
+                <field name="monto_desde"/>
+                <field name="monto_hasta"/>
+                <field name="monto_fijo"/>
+                <field name="porcentaje"/>
+                <field name="sobre_excedente"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_ganancias_escala" model="ir.actions.act_window">
+        <field name="name">Escalas Progresivas</field>
+        <field name="res_model">x_ganancias.escala</field>
+        <field name="view_mode">form,list</field>
+    </record>
+
+    <menuitem
+        id="menu_ganancias_escala"
+        name="Escalas Progresivas"
+        parent="account.menu_finance_configuration"
+        action="action_ganancias_escala"
+        sequence="101"/>
+</odoo>

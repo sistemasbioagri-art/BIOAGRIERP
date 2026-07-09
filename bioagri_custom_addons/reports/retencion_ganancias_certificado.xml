@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_retencion_ganancias" model="ir.actions.report">
+        <field name="name">Certificado de Retención de Ganancias</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bioagri_custom_addons.report_retencion_ganancias_certificado</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_retencion_ganancias_certificado">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.x_retencion_ganancias > 0">
+                    <div class="page">
+                        <h2 style="text-align: center;">CERTIFICADO DE RETENCIÓN DE GANANCIAS</h2>
+                        <br/>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Empresa:</strong> <span t-field="o.company_id.name"/><br/>
+                                <strong>CUIT:</strong> <span t-field="o.company_id.vat"/><br/>
+                                <strong>Domicilio:</strong> <span t-field="o.company_id.street"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Fecha de Pago:</strong> <span t-field="o.date"/><br/>
+                                <strong>N° de Comprobante:</strong> <span t-field="o.name"/>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Proveedor:</strong> <span t-field="o.partner_id.name"/><br/>
+                                <strong>CUIT:</strong> <span t-field="o.partner_id.vat"/><br/>
+                                <strong>Domicilio:</strong> <span t-field="o.partner_id.street"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Régimen:</strong>
+                                <span t-if="o.x_regimen_aplicado" t-field="o.x_regimen_aplicado.name"/>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th class="text-end">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monto Total del Pago</td>
+                                    <td class="text-end">
+                                        <span t-field="o.amount"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Base Imponible (Excedente)</td>
+                                    <td class="text-end">
+                                        <span t-field="o.x_base_retencion"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Monto Retenido</strong></td>
+                                    <td class="text-end">
+                                        <strong>
+                                            <span t-field="o.x_retencion_ganancias"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <p>
+                            El presente certificado se emite en conformidad con lo dispuesto por la
+                            Resolución General N° 830 de la Administración Federal de Ingresos Públicos (AFIP).
+                        </p>
+
+                        <br/><br/>
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <hr style="width: 60%;"/>
+                                <p>Firma y Aclaración Empresa</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <hr style="width: 60%;"/>
+                                <p>Acepto y conformo el descuento</p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
