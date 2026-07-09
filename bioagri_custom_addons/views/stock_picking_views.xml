@@ -11,9 +11,9 @@
                 <field name="x_chofer_dni" placeholder="DNI"/>
                 <field name="x_patente" placeholder="Patente"/>
                 <field name="x_transportista_id" placeholder="Empresa de transporte" domain="[('is_company', '=', True)]"/>
-                <field name="picking_type_code" invisible="1"/>
                 <field name="x_remito_proveedor" placeholder="N° remito del proveedor"
-                       attrs="{'invisible': [('picking_type_code', '!=', 'incoming')], 'required': [('picking_type_code', '=', 'incoming')]}"/>
+                       invisible="picking_type_code != 'incoming'"
+                       required="picking_type_code == 'incoming'"/>
             </xpath>
         </field>
     </record>
