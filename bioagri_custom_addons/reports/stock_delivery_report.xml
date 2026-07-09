@@ -12,198 +12,286 @@
         <field name="header_spacing">0</field>
     </record>
 
-    <record id="action_report_delivery_bioagri" model="ir.actions.report">
-        <field name="name">Remito de Entrega</field>
-        <field name="model">stock.picking</field>
-        <field name="report_type">qweb-pdf</field>
+    <!-- Override the standard stock delivery report to use our custom template -->
+    <record id="stock.action_report_delivery" model="ir.actions.report">
         <field name="report_name">bioagri_custom_addons.report_delivery_document_bioagri</field>
-        <field name="binding_model_id" ref="stock.model_stock_picking"/>
-        <field name="binding_type">report</field>
         <field name="paperformat_id" ref="bioagri_custom_addons.paperformat_remito_bioagri"/>
     </record>
 
     <template id="report_delivery_document_bioagri">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-if="o.picking_type_id.code == 'outgoing'">
-                    <style>
-                        body, .container, .o_body_html, .o_body_pdf, main, #wrapwrap { padding: 0 !important; margin: 0 !important; }
-                        .remito-page { font-family: Arial, Helvetica, sans-serif; color: #333; }
-                        .remito-table { width: 100%; border-collapse: collapse; }
-                        .remito-th { background: #2E7D32; color: white; padding: 6px 8px; text-align: left; border: 1px solid #1b5e20; font-size: 10px; }
-                        .remito-td { padding: 5px 8px; border: 1px solid #ddd; font-size: 10px; }
-                        .remito-section-title { font-size: 9px; color: #888; text-transform: uppercase; margin: 0 0 3px 0; }
-                        .remito-field { margin: 1px 0; font-size: 10px; }
-                        .remito-label { font-weight: bold; color: #2E7D32; }
-                    </style>
-                    <div class="page remito-page" style="padding: 5px;">
-                        <!-- HEADER: Company Info + Document Info -->
-                        <table class="remito-table" style="margin-bottom: 8px;">
-                            <tr>
-                                <!-- Left: Company Info -->
-                                <td style="width: 55%; vertical-align: top; padding-right: 10px; border: none;">
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td style="border: none; padding: 0;">
-                                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 45px; max-width: 120px;" alt="Logo"/>
-                                            </td>
-                                            <td style="border: none; padding: 0; vertical-align: top;">
-                                                <p style="margin: 0; font-size: 14px; font-weight: bold; color: #2E7D32;" t-esc="o.company_id.name"/>
-                                                <p style="margin: 1px 0; font-size: 9px;" t-if="o.company_id.vat">
-                                                    C.U.I.T. <span t-esc="o.company_id.vat"/>
-                                                </p>
-                                                <p style="margin: 1px 0; font-size: 9px;" t-if="o.company_id.street">
-                                                    <span t-esc="o.company_id.street"/>
-                                                    <span t-if="o.company_id.city">, <span t-esc="o.company_id.city"/></span>
-                                                    <span t-if="o.company_id.state_id"> - <span t-esc="o.company_id.state_id.name"/></span>
-                                                </p>
-                                                <p style="margin: 1px 0; font-size: 9px;" t-if="o.company_id.country_id">
-                                                    <span t-esc="o.company_id.country_id.name"/>
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <!-- Right: Document Info -->
-                                <td style="width: 45%; vertical-align: top; border: none; text-align: right;">
-                                    <div style="border: 2px solid #2E7D32; padding: 8px; text-align: center; display: inline-block;">
-                                        <p style="margin: 0; font-size: 18px; font-weight: bold; color: #2E7D32;">REMITO</p>
-                                        <p style="margin: 2px 0; font-size: 8px; color: #666;">DOCUMENTO NO VALIDO COMO FACTURA</p>
-                                        <p style="margin: 2px 0; font-size: 11px;">
-                                            N° <span t-esc="o.name or ''"/>
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- Customer / Shipping Info + Transport Info -->
-                        <table class="remito-table" style="margin-bottom: 8px;">
-                            <tr>
-                                <!-- Left: Customer + Shipping -->
-                                <td style="width: 55%; vertical-align: top; padding-right: 10px; border: none;">
-                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 3px; margin-bottom: 5px; border-left: 3px solid #2E7D32;">
-                                        <p class="remito-section-title">Cliente</p>
-                                        <p class="remito-field"><strong t-esc="o.partner_id.name or ''"/></p>
-                                        <p class="remito-field" t-if="o.partner_id.vat">C.U.I.T. <span t-esc="o.partner_id.vat"/></p>
-                                        <p class="remito-field" t-if="o.partner_id.street">
-                                            <span t-esc="o.partner_id.street"/>
-                                            <span t-if="o.partner_id.city">, <span t-esc="o.partner_id.city"/></span>
-                                        </p>
-                                    </div>
-                                    <div style="background: #f8f9fa; padding: 8px; border-radius: 3px; border-left: 3px solid #1565C0;">
-                                        <p class="remito-section-title">Direccion de Envio</p>
-                                        <p class="remito-field"><strong t-esc="o.partner_id.name or ''"/></p>
-                                        <p class="remito-field" t-if="o.partner_id.street">
-                                            <span t-esc="o.partner_id.street"/>
-                                            <span t-if="o.partner_id.city">, <span t-esc="o.partner_id.city"/></span>
-                                        </p>
-                                    </div>
-                                </td>
-                                <!-- Right: Transport + Dates -->
-                                <td style="width: 45%; vertical-align: top; border: none;">
-                                    <div style="background: #fff3e0; padding: 8px; border-radius: 3px; border-left: 3px solid #E65100;">
-                                        <p class="remito-section-title">Transporte</p>
-                                        <p class="remito-field" t-if="o.x_patente"><span class="remito-label">Patente:</span> <span t-esc="o.x_patente"/></p>
-                                        <p class="remito-field" t-if="o.x_chofer_nombre"><span class="remito-label">Chofer:</span> <span t-esc="o.x_chofer_nombre"/></p>
-                                        <p class="remito-field" t-if="o.x_chofer_dni"><span class="remito-label">DNI:</span> <span t-esc="o.x_chofer_dni"/></p>
-                                        <p class="remito-field" t-if="o.x_transportista_id"><span class="remito-label">Transportista:</span> <span t-esc="o.x_transportista_id.name"/></p>
-                                    </div>
-                                    <div style="background: #e8f5e9; padding: 8px; border-radius: 3px; border-left: 3px solid #2E7D32; margin-top: 5px;">
-                                        <p class="remito-section-title">Fechas</p>
-                                        <p class="remito-field" t-if="o.date_done"><span class="remito-label">Fecha de Entrega:</span> <span t-esc="o.date_done.strftime('%d/%m/%Y') if o.date_done else ''"/></p>
-                                        <p class="remito-field" t-if="o.origin"><span class="remito-label">Origen:</span> <span t-esc="o.origin"/></p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- Emergency Contact -->
-                        <div style="background: #FFF9C4; padding: 6px 10px; border-radius: 3px; margin-bottom: 8px; text-align: center; border: 1px solid #F9A825;">
-                            <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
-                                EMERGENCIAS TOXICOLOGICAS: 0800-888-8694 (24 hs)
-                            </p>
-                        </div>
-
-                        <!-- Product Details Table -->
-                        <p class="remito-section-title" style="margin-bottom: 3px;">Detalles de Expedicion</p>
-                        <table class="remito-table" style="margin-bottom: 8px;">
-                            <thead>
-                                <tr>
-                                    <th class="remito-th" style="width: 8%;">Pos.</th>
-                                    <th class="remito-th" style="width: 15%;">Material</th>
-                                    <th class="remito-th" style="width: 30%;">Descripcion</th>
-                                    <th class="remito-th" style="width: 12%; text-align: right;">Cantidad</th>
-                                    <th class="remito-th" style="width: 15%; text-align: right;">Cant. Alternativa</th>
-                                    <th class="remito-th" style="width: 20%;">Lote</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="o.move_ids_without_package" t-as="move">
-                                    <tr t-att-style="'background: #f5f5f5;' if move_index % 2 == 0 else ''">
-                                        <td class="remito-td" t-esc="move_index + 1"/>
-                                        <td class="remito-td" t-esc="move.product_id.default_code or ''"/>
-                                        <td class="remito-td" t-esc="move.product_id.name or ''"/>
-                                        <td class="remito-td" style="text-align: right;">
-                                            <span t-esc="'%s %s' % (move.product_uom_qty, move.product_uom.name)"/>
+                <style>
+                    body, .container, .o_body_html, .o_body_pdf, main, #wrapwrap { padding: 0 !important; margin: 0 !important; }
+                </style>
+                <div class="page" style="font-family: Arial, Helvetica, sans-serif; color: #333; font-size: 10px; padding: 8px;">
+                    <!-- HEADER ROW: Company + Document -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
+                        <tr>
+                            <!-- LEFT: Company Info -->
+                            <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px;">
+                                <table style="width: 100%; border: none;">
+                                    <tr>
+                                        <td style="border: none; padding: 0; width: 40%;">
+                                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 50px; max-width: 130px;" alt="Logo"/>
                                         </td>
-                                        <td class="remito-td" style="text-align: right;">
-                                            <span t-if="move.product_uom_qty != move.quantity" t-esc="'%s %s' % (move.quantity, move.product_uom.name)"/>
-                                        </td>
-                                        <td class="remito-td">
-                                            <t t-foreach="move.move_line_ids" t-as="ml">
-                                                <span t-if="ml.lot_id" t-esc="ml.lot_id.name"/>
-                                                <span t-if="ml.lot_name" t-esc="ml.lot_name"/>
-                                            </t>
+                                        <td style="border: none; padding: 0; vertical-align: top; font-size: 9px;">
+                                            <p style="margin: 0; font-size: 13px; font-weight: bold;">Rizobacter</p>
+                                            <p style="margin: 1px 0;">Caja previsional de comercio: 1.278.849</p>
+                                            <p style="margin: 1px 0;">Rizobacter Argentina</p>
+                                            <p style="margin: 1px 0;">Avda. Pte. Arturo Frondizi 1150 Parque Industrial Pergamino 2702</p>
+                                            <p style="margin: 1px 0;">Buenos Aires - Argentina</p>
+                                            <p style="margin: 1px 0;">IVA Responsable Inscripto</p>
+                                            <p style="margin: 1px 0;">C.U.I.T. 30593174057</p>
+                                            <p style="margin: 1px 0;">N° IIBB 30593174057/902</p>
+                                            <p style="margin: 1px 0;">Inicio de Actividades: 20.10.1983</p>
+                                            <p style="margin: 1px 0;">Teléfono: 54 2477-409400</p>
+                                            <p style="margin: 1px 0;">Rubro:</p>
                                         </td>
                                     </tr>
-                                </t>
-                            </tbody>
-                        </table>
+                                </table>
+                            </td>
+                            <!-- RIGHT: Document Info -->
+                            <td style="width: 45%; vertical-align: top; border: none; text-align: right;">
+                                <table style="border-collapse: collapse; float: right;">
+                                    <tr>
+                                        <td style="border: 2px solid #333; padding: 4px 8px; text-align: center; vertical-align: middle;">
+                                            <span style="font-size: 20px; font-weight: bold;">R</span>
+                                            <br/>
+                                            <span style="font-size: 7px;">Cod. 91</span>
+                                        </td>
+                                        <td style="padding-left: 10px; vertical-align: top; text-align: left;">
+                                            <p style="margin: 0; font-size: 16px; font-weight: bold;">REMITO</p>
+                                            <p style="margin: 2px 0; font-size: 8px; color: #666;">DOCUMENTO NO VALIDO COMO FACTURA</p>
+                                            <p style="margin: 2px 0; font-size: 12px;">N° <span t-esc="o.name or ''"/></p>
+                                            <p style="margin: 2px 0; font-size: 8px;">Comprobante triplicado</p>
+                                            <p style="margin: 2px 0; font-size: 8px;">Hoja: 1/1</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <!-- Lot & Expiry Info (if tracked) -->
-                        <t t-set="has_lots" t-value="any(move.move_line_ids.lot_id or move.move_line_ids.lot_name for move in o.move_ids_without_package)"/>
-                        <div t-if="has_lots" style="background: #e8f5e9; padding: 6px 10px; border-radius: 3px; margin-bottom: 8px; border: 1px solid #c8e6c9;">
-                            <p class="remito-section-title">Lotes y Vencimientos</p>
-                            <t t-foreach="o.move_ids_without_package" t-as="move">
-                                <t t-foreach="move.move_line_ids" t-as="ml">
-                                    <p class="remito-field" t-if="ml.lot_id or ml.lot_name">
-                                        <span class="remito-label">Lote:</span>
-                                        <span t-esc="ml.lot_id.name or ml.lot_name or ''"/>
-                                        <span t-if="ml.lot_id.x_date_of_expiration or ml.lot_id.life_date">
-                                            | <span class="remito-label">Vence:</span>
-                                            <span t-esc="(ml.lot_id.x_date_of_expiration or ml.lot_id.life_date).strftime('%d/%m/%Y')"/>
-                                        </span>
+                    <!-- SECOND ROW: Cliente + Info expedición -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
+                        <tr>
+                            <!-- LEFT: Cliente + Dirección envío -->
+                            <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px; font-size: 9px;">
+                                <div style="margin-bottom: 4px;">
+                                    <p style="margin: 0 0 2px 0; font-weight: bold;">Cliente</p>
+                                    <p style="margin: 0;" t-esc="o.partner_id.name or ''"/>
+                                    <p style="margin: 0;" t-if="o.partner_id.vat">C.U.I.T. <span t-esc="o.partner_id.vat"/></p>
+                                    <p style="margin: 0;" t-if="o.partner_id.street">
+                                        <span t-esc="o.partner_id.street"/>
+                                        <span t-if="o.partner_id.city">, <span t-esc="o.partner_id.city"/></span>
+                                        <span t-if="o.partner_id.state_id"> - <span t-esc="o.partner_id.state_id.name"/></span>
                                     </p>
-                                </t>
-                            </t>
-                        </div>
+                                </div>
+                                <div>
+                                    <p style="margin: 0 0 2px 0; font-weight: bold;">Dirección de envío</p>
+                                    <p style="margin: 0;" t-esc="o.partner_id.name or ''"/>
+                                    <p style="margin: 0;" t-if="o.partner_id.street">
+                                        <span t-esc="o.partner_id.street"/>
+                                        <span t-if="o.partner_id.city">, <span t-esc="o.partner_id.city"/></span>
+                                        <span t-if="o.partner_id.state_id"> - <span t-esc="o.partner_id.state_id.name"/></span>
+                                    </p>
+                                </div>
+                            </td>
+                            <!-- RIGHT: Info de expedición -->
+                            <td style="width: 45%; vertical-align: top; border: none; font-size: 9px;">
+                                <p style="margin: 0 0 3px 0; font-weight: bold;">Información de expedición</p>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; width: 45%;">Documento/Fecha</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.origin or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">N° Transporte/Fecha</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">
+                                            <span t-if="o.x_patente" t-esc="o.x_patente"/>
+                                            <span t-if="o.date_done"> / <span t-esc="o.date_done.strftime('%d.%m.%Y') if o.date_done else ''"/></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">Pedido/Fecha</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.origin or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">Número de cliente</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.partner_id.ref or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">Número de destinatario</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.partner_id.ref or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">Transportista:</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.x_transportista_id.name or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">CUIT transportista:</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.x_transportista_id.vat or ''"/>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
 
-                        <!-- Footer: Terms + Signature -->
-                        <div style="margin-top: 10px;">
-                            <table class="remito-table" style="margin-bottom: 8px;">
+                    <!-- THIRD ROW: Condiciones + Transporte -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
+                        <tr>
+                            <!-- LEFT: Condiciones -->
+                            <td style="width: 35%; vertical-align: top; border: none; padding-right: 10px; font-size: 9px;">
+                                <p style="margin: 0 0 3px 0; font-weight: bold;">Condiciones</p>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Expedición:</td>
+                                        <td style="border: none; padding: 1px 0;">MERCADERIA EN CONSIGNACION</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Entrega</td>
+                                        <td style="border: none; padding: 1px 0;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Depósito origen</td>
+                                        <td style="border: none; padding: 1px 0;" t-if="o.company_id.street">
+                                            <span t-esc="o.company_id.street"/> - CP. <span t-esc="o.company_id.zip or ''"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p style="margin: 4px 0 0 0; font-weight: bold;">Información</p>
+                            </td>
+                            <!-- RIGHT: Transporte -->
+                            <td style="width: 65%; vertical-align: top; border: none; font-size: 9px;">
+                                <p style="margin: 0 0 3px 0; font-weight: bold;">TRANSPORTE</p>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; width: 30%; font-weight: bold;">Camión:</td>
+                                        <td style="border: none; padding: 1px 0;" t-esc="o.x_patente or ''"/>
+                                        <td style="border: none; padding: 1px 0; text-align: right; font-weight: bold;">Cot.</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Acopiado:</td>
+                                        <td style="border: none; padding: 1px 0;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Chofer:</td>
+                                        <td style="border: none; padding: 1px 0;" t-esc="o.x_chofer_nombre or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">DNI:</td>
+                                        <td style="border: none; padding: 1px 0;" t-esc="o.x_chofer_dni or ''"/>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0; font-weight: bold;">Peso - Volumen</td>
+                                        <td style="border: none; padding: 1px 0;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">Peso total</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">15 KG</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: none; padding: 1px 0;">Peso neto</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">14 KG</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- EMERGENCY CONTACT BAR -->
+                    <div style="background: #FFF9C4; padding: 6px 10px; margin-bottom: 6px; text-align: center; border: 1px solid #F9A825;">
+                        <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
+                            EMERGENCIAS TOXICOLOGICAS : 0800-888-8694 (24 hs)
+                        </p>
+                        <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
+                            PARA EMERGENCIAS EN EL TRANSPORTE LLAMAR AL CIQUIIME TE 0800-222-2933 (24 hs)
+                        </p>
+                    </div>
+
+                    <!-- PRODUCT TABLE -->
+                    <p style="margin: 0 0 3px 0; font-weight: bold; font-size: 9px;">Detalles de expedición</p>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px; border: 1px solid #ccc;">
+                        <thead>
+                            <tr style="background: #f0f0f0;">
+                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Posición</th>
+                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Material</th>
+                                <th style="padding: 4px 6px; text-align: left; border: 1px solid #ccc; font-size: 9px;">Descripción</th>
+                                <th style="padding: 4px 6px; text-align: right; border: 1px solid #ccc; font-size: 9px;">Cantidad</th>
+                                <th style="padding: 4px 6px; text-align: right; border: 1px solid #ccc; font-size: 9px;">Cant alternativa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.move_ids_without_package" t-as="move">
                                 <tr>
-                                    <td style="width: 50%; vertical-align: bottom; border: none; padding-right: 10px;">
-                                        <p style="margin: 0 0 2px 0; font-size: 8px; color: #666;">
-                                            1. La mercaderia se entrega en perfectas condiciones. Reclamos dentro de 48hs.
-                                        </p>
-                                        <p style="margin: 0 0 2px 0; font-size: 8px; color: #666;">
-                                            2. El transportista reconoce haber recibido las cartillas de emergencia.
-                                        </p>
-                                        <p style="margin: 0 0 2px 0; font-size: 8px; color: #666;">
-                                            3. Descontaminar la unidad conforme Res. 779/95.
-                                        </p>
+                                    <td style="padding: 4px 6px; border: 1px solid #ccc; font-size: 9px;" t-esc="move_index + 1"/>
+                                    <td style="padding: 4px 6px; border: 1px solid #ccc; font-size: 9px;" t-esc="move.product_id.default_code or ''"/>
+                                    <td style="padding: 4px 6px; border: 1px solid #ccc; font-size: 9px;" t-esc="move.product_id.name or ''"/>
+                                    <td style="padding: 4px 6px; border: 1px solid #ccc; font-size: 9px; text-align: right;">
+                                        <span t-esc="'%s %s' % (move.product_uom_qty, move.product_uom.name)"/>
                                     </td>
-                                    <td style="width: 50%; vertical-align: bottom; border: none; text-align: center;">
-                                        <div style="margin-top: 60px; border-top: 1px solid #333; padding-top: 3px;">
-                                            <p style="margin: 0; font-size: 9px;"><strong>Firma y Aclaracion</strong></p>
-                                        </div>
+                                    <td style="padding: 4px 6px; border: 1px solid #ccc; font-size: 9px; text-align: right;">
+                                        <span t-if="move.product_uom_qty != move.quantity" t-esc="'%s %s' % (move.quantity, move.product_uom.name)"/>
                                     </td>
                                 </tr>
-                            </table>
-                        </div>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- LOT & EXPIRY INFO -->
+                    <t t-set="has_lots" t-value="any(move.move_line_ids.lot_id or move.move_line_ids.lot_name for move in o.move_ids_without_package)"/>
+                    <div t-if="has_lots" style="margin-bottom: 6px; font-size: 9px;">
+                        <t t-foreach="o.move_ids_without_package" t-as="move">
+                            <t t-foreach="move.move_line_ids" t-as="ml">
+                                <p t-if="ml.lot_id or ml.lot_name" style="margin: 1px 0;">
+                                    <strong>Lote:</strong>
+                                    <span t-esc="ml.lot_id.name or ml.lot_name or ''"/>
+                                    <span t-if="ml.lot_id.x_date_of_expiration or ml.lot_id.life_date">
+                                        <strong>Fecha de venc:</strong>
+                                        <span t-esc="(ml.lot_id.x_date_of_expiration or ml.lot_id.life_date).strftime('%d.%m.%Y')"/>
+                                    </span>
+                                </p>
+                            </t>
+                        </t>
                     </div>
-                </t>
+
+                    <!-- DECLARED VALUE -->
+                    <div style="margin-bottom: 6px; font-size: 9px;">
+                        <p style="margin: 1px 0;"><strong>Valor declarado:</strong></p>
+                        <p style="margin: 1px 0;"><strong>Cant de bultos:</strong> 0</p>
+                        <p style="margin: 1px 0;"><strong>Cant de pallets:</strong></p>
+                    </div>
+
+                    <!-- CAI + Footer -->
+                    <div style="border-top: 1px solid #ccc; padding-top: 4px; margin-bottom: 6px; font-size: 8px;">
+                        <span>N° CAI: 51517216351695</span>
+                        <span style="float: right;">Fecha de vencimiento: 20.06.2026</span>
+                    </div>
+
+                    <!-- TERMS + SIGNATURE -->
+                    <table style="width: 100%; border-collapse: collapse; font-size: 7px;">
+                        <tr>
+                            <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px;">
+                                <p style="margin: 0 0 2px 0;">1. Rizobacter Argentina S.A. entrega toda la mercaderia en perfectas condiciones y no acepta reclamos o responsabilidad por pérdidas o daños durante el viaje.</p>
+                                <p style="margin: 0 0 2px 0;">2. Cualquier reclamo a Rizobacter Argentina S.A. debe interponerse dentro de las 48 hs. inmediatas posteriores a la fecha de recepción de mercadería.</p>
+                                <p style="margin: 0 0 2px 0;">3. El transportista reconoce en forma expresa haber recibido de Rizobacter las cartillas de emergencia correspondientes a los productos remitidos.</p>
+                                <p style="margin: 0 0 2px 0;">4. El transportista asume la obligación de descontaminar a su exclusivo cargo, costo y responsabilidad la unidad completa utilizada para transportar mercadería, en forma inmediata posterior a la descarga de misma mercadería, en un todo conforme con la Resolución N°779/95.</p>
+                                <p style="margin: 0 0 2px 0;">5. En caso de devolución de los productos, el dador de carga estará obligado a cumplir las causales establecidas en los arts. 11, 41 y ss. de la Ley 2026-R (antes 7032) de Biocidas y Decreto Reglamentario N° 1567/2013, de la Provincia de Chaco.</p>
+                            </td>
+                            <td style="width: 45%; vertical-align: top; border: none; text-align: center;">
+                                <p style="margin: 0 0 3px 0; font-weight: bold; font-size: 9px;">RECIBI CONFORME</p>
+                                <p style="margin: 0 0 2px 0; font-size: 8px;">FECHA DE ENTREGA:</p>
+                                <div style="margin-top: 40px; border-top: 1px solid #333; padding-top: 3px;">
+                                    <p style="margin: 0; font-size: 8px;"><strong>Firma</strong></p>
+                                    <p style="margin: 0; font-size: 7px;">Aclaración Firma</p>
+                                    <p style="margin: 0; font-size: 7px;">Tipo DOC. Número DOC.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </t>
         </t>
     </template>
