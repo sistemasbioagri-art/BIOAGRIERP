@@ -148,18 +148,20 @@
                             </p>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between; margin-top: 40px;">
-                            <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; padding-top: 30px; margin-bottom: 5px;"></div>
-                                <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
-                                <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
-                            </div>
-                            <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; padding-top: 30px; margin-bottom: 5px;"></div>
-                                <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
-                                <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
-                            </div>
-                        </div>
+                        <table style="width: 100%; margin-top: 40px; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 50%; text-align: center; vertical-align: top; padding: 0 20px;">
+                                    <div style="border-top: 2px solid #333; padding-top: 30px; margin-bottom: 5px;"></div>
+                                    <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
+                                    <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
+                                </td>
+                                <td style="width: 50%; text-align: center; vertical-align: top; padding: 0 20px;">
+                                    <div style="border-top: 2px solid #333; padding-top: 30px; margin-bottom: 5px;"></div>
+                                    <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
+                                    <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </t>
             </t>
