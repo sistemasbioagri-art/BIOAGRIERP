@@ -9,11 +9,19 @@
         <field name="binding_type">report</field>
     </record>
 
+    <record id="action_pagos_con_retencion" model="ir.actions.act_window">
+        <field name="name">Pagos con Retención de Ganancias</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('x_retencion_ganancias', '&gt;', 0)]</field>
+        <field name="context">{'search_default_my_payments': 1}</field>
+    </record>
+
     <menuitem
         id="menu_report_retencion_ganancias"
         name="Certificado de Retención de Ganancias"
         parent="account.menu_finance_reports"
-        action="report_retencion_ganancias"
+        action="action_pagos_con_retencion"
         sequence="100"/>
 
     <template id="report_retencion_ganancias_certificado">
