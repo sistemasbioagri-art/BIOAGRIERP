@@ -27,7 +27,7 @@
                             FACTURA
                         </h1>
                         <p style="color: #666; margin: 5px 0 0 0; font-size: 12px;">
-                            N&deg; <span t-field="o.l10n_latam_document_number or o.name"/>
+                            N° <span t-field="o.l10n_latam_document_number or o.name"/>
                         </p>
                     </td>
                 </tr>
