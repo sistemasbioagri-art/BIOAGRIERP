@@ -26,129 +26,125 @@
 
     <template id="report_retencion_ganancias_certificado">
         <t t-call="web.html_container">
+            <style>
+                @page { size: A4; margin: 10mm 15mm 10mm 15mm; }
+            </style>
             <t t-foreach="docs" t-as="o">
                 <t t-if="o.x_retencion_ganancias > 0">
-                    <div class="page">
-                        <style>
-                            @page { size: A4; margin: 10mm 15mm 10mm 15mm; }
-                            .page { padding: 0 !important; margin: 0 !important; }
-                            .certificate { font-family: Arial, Helvetica, sans-serif; color: #333; }
-                        </style>
-                        <div class="certificate">
-                            <div style="border-bottom: 3px solid #2E7D32; padding-bottom: 10px; margin-bottom: 15px;">
-                                <h1 style="text-align: center; color: #2E7D32; margin: 0; font-size: 22px;">
-                                    CERTIFICADO DE RETENCION DE GANANCIAS
-                                </h1>
-                                <p style="text-align: center; color: #666; margin: 5px 0 0 0; font-size: 11px;">
-                                    Resolucion General N. 830 - AFIP
-                                </p>
-                            </div>
+                    <div class="page" style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #333;">
+                        <div style="border-bottom: 3px solid #2E7D32; padding-bottom: 10px; margin-bottom: 15px;">
+                            <h1 style="text-align: center; color: #2E7D32; margin: 0; font-size: 22px;">
+                                CERTIFICADO DE RETENCION DE GANANCIAS
+                            </h1>
+                            <p style="text-align: center; color: #666; margin: 5px 0 0 0; font-size: 11px;">
+                                Resolucion General N. 830 - AFIP
+                            </p>
+                        </div>
 
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                                <div style="width: 48%; background: #f8f9fa; padding: 12px; border-radius: 5px; border-left: 4px solid #2E7D32;">
-                                    <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Sujeto Retenido</p>
-                                    <p style="margin: 2px 0;"><strong style="color: #2E7D32;">Empresa:</strong> <span t-esc="o.company_id.name"/></p>
-                                    <p style="margin: 2px 0;"><strong style="color: #2E7D32;">CUIT:</strong> <span t-esc="o.company_id.vat"/></p>
-                                    <p style="margin: 2px 0;"><strong style="color: #2E7D32;">Domicilio:</strong> <span t-esc="o.company_id.street or ''"/></p>
-                                </div>
-                                <div style="width: 48%; background: #f8f9fa; padding: 12px; border-radius: 5px; border-left: 4px solid #1565C0;">
-                                    <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Comprobante</p>
-                                    <p style="margin: 2px 0;"><strong style="color: #1565C0;">N. Comprobante:</strong> <span t-esc="o.name"/></p>
-                                    <p style="margin: 2px 0;"><strong style="color: #1565C0;">Fecha de Pago:</strong> <span t-esc="o.date"/></p>
-                                    <p style="margin: 2px 0;"><strong style="color: #1565C0;">Moneda:</strong> <span t-esc="o.company_id.currency_id.name"/></p>
-                                </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <div style="width: 48%; background: #f8f9fa; padding: 12px; border-radius: 5px; border-left: 4px solid #2E7D32;">
+                                <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Sujeto Retenido</p>
+                                <p style="margin: 2px 0;"><strong style="color: #2E7D32;">Empresa:</strong> <span t-esc="o.company_id.name"/></p>
+                                <p style="margin: 2px 0;"><strong style="color: #2E7D32;">CUIT:</strong> <span t-esc="o.company_id.vat"/></p>
+                                <p style="margin: 2px 0;"><strong style="color: #2E7D32;">Domicilio:</strong> <span t-esc="o.company_id.street or ''"/></p>
                             </div>
+                            <div style="width: 48%; background: #f8f9fa; padding: 12px; border-radius: 5px; border-left: 4px solid #1565C0;">
+                                <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Comprobante</p>
+                                <p style="margin: 2px 0;"><strong style="color: #1565C0;">N. Comprobante:</strong> <span t-esc="o.name"/></p>
+                                <p style="margin: 2px 0;"><strong style="color: #1565C0;">Fecha de Pago:</strong> <span t-esc="o.date"/></p>
+                                <p style="margin: 2px 0;"><strong style="color: #1565C0;">Moneda:</strong> <span t-esc="o.company_id.currency_id.name"/></p>
+                            </div>
+                        </div>
 
-                            <div style="background: #e8f5e9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #c8e6c9;">
-                                <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Proveedor / Beneficiario</p>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <div>
-                                        <p style="margin: 2px 0;"><strong>Nombre:</strong> <span t-esc="o.partner_id.name"/></p>
-                                        <p style="margin: 2px 0;"><strong>CUIT:</strong> <span t-esc="o.partner_id.vat or ''"/></p>
-                                        <p style="margin: 2px 0;"><strong>Domicilio:</strong> <span t-esc="o.partner_id.street or ''"/></p>
-                                    </div>
-                                    <div style="text-align: right;">
-                                        <p style="margin: 2px 0;"><strong>Responsabilidad:</strong> <span t-esc="o.partner_id.l10n_ar_afip_responsibility_type_id.name or ''"/></p>
-                                    </div>
+                        <div style="background: #e8f5e9; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #c8e6c9;">
+                            <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Proveedor / Beneficiario</p>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <p style="margin: 2px 0;"><strong>Nombre:</strong> <span t-esc="o.partner_id.name"/></p>
+                                    <p style="margin: 2px 0;"><strong>CUIT:</strong> <span t-esc="o.partner_id.vat or ''"/></p>
+                                    <p style="margin: 2px 0;"><strong>Domicilio:</strong> <span t-esc="o.partner_id.street or ''"/></p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <p style="margin: 2px 0;"><strong>Responsabilidad:</strong> <span t-esc="o.partner_id.l10n_ar_afip_responsibility_type_id.name or ''"/></p>
                                 </div>
                             </div>
+                        </div>
 
-                            <div style="background: #fff3e0; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ffe0b2;">
-                                <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Regimen Aplicado</p>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <div>
-                                        <p style="margin: 2px 0;"><strong>Codigo:</strong> <span t-esc="o.x_regimen_aplicado.code or ''"/></p>
-                                        <p style="margin: 2px 0;"><strong>Descripcion:</strong> <span t-esc="o.x_regimen_aplicado.name or ''"/></p>
-                                    </div>
-                                    <div style="text-align: right;">
-                                        <p style="margin: 2px 0;"><strong>Minimo No Imponible:</strong>
-                                            <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_regimen_aplicado.minimo_no_imponible).replace(',', '.'))"/>
-                                        </p>
-                                        <p style="margin: 2px 0;" t-if="not o.x_regimen_aplicado.usa_escala">
-                                            <strong>Alicuota:</strong> <span t-esc="str(round(o.x_regimen_aplicado.alicuota_fija, 2)) + ' %'"/>
-                                        </p>
-                                        <p style="margin: 2px 0;" t-if="o.x_regimen_aplicado.usa_escala">
-                                            <strong>Tipo:</strong> Escala Progresiva
-                                        </p>
-                                    </div>
+                        <div style="background: #fff3e0; padding: 12px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ffe0b2;">
+                            <p style="font-size: 10px; color: #888; margin: 0 0 5px 0; text-transform: uppercase;">Regimen Aplicado</p>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <p style="margin: 2px 0;"><strong>Codigo:</strong> <span t-esc="o.x_regimen_aplicado.code or ''"/></p>
+                                    <p style="margin: 2px 0;"><strong>Descripcion:</strong> <span t-esc="o.x_regimen_aplicado.name or ''"/></p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <p style="margin: 2px 0;"><strong>Minimo No Imponible:</strong>
+                                        <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_regimen_aplicado.minimo_no_imponible).replace(',', '.'))"/>
+                                    </p>
+                                    <p style="margin: 2px 0;" t-if="not o.x_regimen_aplicado.usa_escala">
+                                        <strong>Alicuota:</strong> <span t-esc="str(round(o.x_regimen_aplicado.alicuota_fija, 2)) + ' %'"/>
+                                    </p>
+                                    <p style="margin: 2px 0;" t-if="o.x_regimen_aplicado.usa_escala">
+                                        <strong>Tipo:</strong> Escala Progresiva
+                                    </p>
                                 </div>
                             </div>
+                        </div>
 
-                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                                <thead>
-                                    <tr style="background: #2E7D32; color: white;">
-                                        <th style="padding: 8px; text-align: left; border: 1px solid #1b5e20;">Concepto</th>
-                                        <th style="padding: 8px; text-align: right; border: 1px solid #1b5e20;">Monto</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="background: #f5f5f5;">
-                                        <td style="padding: 8px; border: 1px solid #ddd;">Monto Total del Pago</td>
-                                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                            <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.amount).replace(',', '.'))"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px; border: 1px solid #ddd;">Base Imponible (Excedente sobre el minimo)</td>
-                                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                            <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_base_retencion).replace(',', '.'))"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="background: #f5f5f5;">
-                                        <td style="padding: 8px; border: 1px solid #ddd;">Retenciones Anteriores del Mes</td>
-                                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
-                                            <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_acumulado_mes).replace(',', '.'))"/>
-                                        </td>
-                                    </tr>
-                                    <tr style="background: #e8f5e9;">
-                                        <td style="padding: 10px; border: 1px solid #c8e6c9; font-size: 14px;"><strong>MONTO RETENIDO</strong></td>
-                                        <td style="padding: 10px; text-align: right; border: 1px solid #c8e6c9; font-size: 16px; font-weight: bold; color: #2E7D32;">
-                                            <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_retencion_ganancias).replace(',', '.'))"/>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <thead>
+                                <tr style="background: #2E7D32; color: white;">
+                                    <th style="padding: 8px; text-align: left; border: 1px solid #1b5e20;">Concepto</th>
+                                    <th style="padding: 8px; text-align: right; border: 1px solid #1b5e20;">Monto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="background: #f5f5f5;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Monto Total del Pago</td>
+                                    <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
+                                        <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.amount).replace(',', '.'))"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Base Imponible (Excedente sobre el minimo)</td>
+                                    <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
+                                        <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_base_retencion).replace(',', '.'))"/>
+                                    </td>
+                                </tr>
+                                <tr style="background: #f5f5f5;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;">Retenciones Anteriores del Mes</td>
+                                    <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">
+                                        <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_acumulado_mes).replace(',', '.'))"/>
+                                    </td>
+                                </tr>
+                                <tr style="background: #e8f5e9;">
+                                    <td style="padding: 10px; border: 1px solid #c8e6c9; font-size: 14px;"><strong>MONTO RETENIDO</strong></td>
+                                    <td style="padding: 10px; text-align: right; border: 1px solid #c8e6c9; font-size: 16px; font-weight: bold; color: #2E7D32;">
+                                        <span t-esc="'%s %s' % (o.company_id.currency_id.symbol, '{:,.2f}'.format(o.x_retencion_ganancias).replace(',', '.'))"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                            <div style="background: #f5f5f5; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 11px; color: #555;">
-                                <p style="margin: 0;">
-                                    El presente certificado se emite en conformidad con lo dispuesto por la
-                                    Resolucion General N. 830 de la Administracion Federal de Ingresos Publicos (AFIP).
-                                    El sujeto retenido declara bajo juramento que los datos consignados en el presente
-                                    certificado son correctos y que el regimen aplicado corresponde a la operacion realizada.
-                                </p>
+                        <div style="background: #f5f5f5; padding: 12px; border-radius: 5px; margin-bottom: 15px; font-size: 11px; color: #555;">
+                            <p style="margin: 0;">
+                                El presente certificado se emite en conformidad con lo dispuesto por la
+                                Resolucion General N. 830 de la Administracion Federal de Ingresos Publicos (AFIP).
+                                El sujeto retenido declara bajo juramento que los datos consignados en el presente
+                                certificado son correctos y que el regimen aplicado corresponde a la operacion realizada.
+                            </p>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                            <div style="width: 45%; text-align: center;">
+                                <div style="border-top: 2px solid #333; margin-bottom: 5px;"></div>
+                                <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
+                                <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
                             </div>
-
-                            <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-                                <div style="width: 45%; text-align: center;">
-                                    <div style="border-top: 2px solid #333; margin-bottom: 5px;"></div>
-                                    <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
-                                    <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
-                                </div>
-                                <div style="width: 45%; text-align: center;">
-                                    <div style="border-top: 2px solid #333; margin-bottom: 5px;"></div>
-                                    <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
-                                    <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
-                                </div>
+                            <div style="width: 45%; text-align: center;">
+                                <div style="border-top: 2px solid #333; margin-bottom: 5px;"></div>
+                                <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
+                                <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
                             </div>
                         </div>
                     </div>
