@@ -26,12 +26,15 @@
 
     <template id="report_retencion_ganancias_certificado">
         <t t-call="web.html_container">
-            <style>
-                @page { size: A4; margin: 10mm 15mm 10mm 15mm; }
-            </style>
+            <t t-set="head">
+                <style>
+                    @page { size: A4; margin: 10mm 15mm 10mm 15mm; }
+                    .page { padding: 0 !important; margin: 0 !important; }
+                </style>
+            </t>
             <t t-foreach="docs" t-as="o">
                 <t t-if="o.x_retencion_ganancias > 0">
-                    <div class="page" style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #333;">
+                    <div class="page" style="font-family: Arial, Helvetica, sans-serif; color: #333;">
                         <div style="border-bottom: 3px solid #2E7D32; padding-bottom: 10px; margin-bottom: 15px;">
                             <h1 style="text-align: center; color: #2E7D32; margin: 0; font-size: 22px;">
                                 CERTIFICADO DE RETENCION DE GANANCIAS
@@ -135,14 +138,14 @@
                             </p>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                        <div style="display: flex; justify-content: space-between; margin-top: 60px;">
                             <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; margin-bottom: 5px;"></div>
+                                <div style="border-top: 2px solid #333; min-height: 50px; margin-bottom: 5px;"></div>
                                 <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
                                 <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
                             </div>
                             <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; margin-bottom: 5px;"></div>
+                                <div style="border-top: 2px solid #333; min-height: 50px; margin-bottom: 5px;"></div>
                                 <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
                                 <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
                             </div>
