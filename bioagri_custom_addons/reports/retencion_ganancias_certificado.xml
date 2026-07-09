@@ -148,14 +148,14 @@
                             </p>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                        <div style="display: flex; justify-content: space-between; margin-top: 40px;">
                             <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; min-height: 30px; margin-bottom: 5px;"></div>
+                                <div style="border-top: 2px solid #333; min-height: 60px; margin-bottom: 5px;"></div>
                                 <p style="font-size: 11px; margin: 0;"><strong>Firma y Sello</strong></p>
                                 <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Sujeto Retenido</p>
                             </div>
                             <div style="width: 45%; text-align: center;">
-                                <div style="border-top: 2px solid #333; min-height: 30px; margin-bottom: 5px;"></div>
+                                <div style="border-top: 2px solid #333; min-height: 60px; margin-bottom: 5px;"></div>
                                 <p style="font-size: 11px; margin: 0;"><strong>Firma y Aclaracion</strong></p>
                                 <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">Beneficiario / Proveedor</p>
                             </div>
