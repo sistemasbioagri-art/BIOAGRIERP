@@ -12,27 +12,15 @@
             </tr>
         </xpath>
 
-        <xpath expr="//div[hasclass('page')]" position="attributes">
-            <attribute name="t-attf-style">font-family: Arial, Helvetica, sans-serif; color: #333;</attribute>
-        </xpath>
-
-        <xpath expr="//h2[@t-if='o.name']/.." position="before">
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                <tr>
-                    <td style="width: 30%; vertical-align: middle; text-align: left;">
-                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 60px; max-width: 150px;" alt="Logo"/>
-                    </td>
-                    <td style="width: 70%; vertical-align: middle; text-align: right;">
-                        <h1 style="color: #2E7D32; margin: 0; font-size: 22px;">
-                            FACTURA
-                        </h1>
-                        <p style="color: #666; margin: 5px 0 0 0; font-size: 12px;">
-                            N° <span t-field="o.l10n_latam_document_number or o.name"/>
-                        </p>
-                    </td>
-                </tr>
-            </table>
-            <div style="border-bottom: 3px solid #2E7D32; margin-bottom: 15px;"></div>
+        <xpath expr="//t[@t-set='layout_document_title']" position="replace">
+            <t t-set="layout_document_title">
+                <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'" style="color: #2E7D32; font-weight: bold;">FACTURA</span>
+                <span t-elif="o.move_type == 'out_refund' and o.state == 'posted'" style="color: #2E7D32; font-weight: bold;">NOTA DE CREDITO</span>
+                <span t-elif="o.move_type == 'out_invoice' and o.state == 'draft'" style="color: #2E7D32; font-weight: bold;">BORRADOR</span>
+                <span t-elif="o.move_type == 'out_refund' and o.state == 'draft'" style="color: #2E7D32; font-weight: bold;">BORRADOR NOTA DE CREDITO</span>
+                <br/>
+                <span t-if="o.name and o.name != '/'" t-field="o.name" style="font-size: 14px; color: #666;">INV/2023/0001</span>
+            </t>
         </xpath>
     </template>
 </odoo>
