@@ -6,10 +6,10 @@
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='amount']" position="after">
-                <field name="x_base_retencion" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'"/>
-                <field name="x_retencion_ganancias" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'"/>
-                <field name="x_regimen_aplicado" invisible="payment_type != 'outbound'"/>
-                <field name="x_acumulado_mes" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'"/>
+                <field name="x_base_retencion" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'" readonly="1"/>
+                <field name="x_retencion_ganancias" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'" readonly="1"/>
+                <field name="x_regimen_aplicado" invisible="payment_type != 'outbound'" readonly="1"/>
+                <field name="x_acumulado_mes" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'" readonly="1"/>
             </xpath>
         </field>
     </record>

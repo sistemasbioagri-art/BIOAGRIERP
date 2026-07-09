@@ -41,7 +41,7 @@
     <record id="action_ganancias_escala" model="ir.actions.act_window">
         <field name="name">Escalas Progresivas</field>
         <field name="res_model">x_ganancias.escala</field>
-        <field name="view_mode">form,list</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem
