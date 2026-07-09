@@ -4,7 +4,7 @@
               inherit_id="account.report_invoice_document">
         <xpath expr="//div[@id='total']//table/t[@t-call='account.document_tax_totals']" position="before">
             <tr t-if="o.x_percepcion_iibb > 0">
-                <td><span>Percepci&oacute;n IIBB</span></td>
+                <td><span>Percepción IIBB</span></td>
                 <td class="text-end">
                     <span t-out="o.x_percepcion_iibb"
                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
