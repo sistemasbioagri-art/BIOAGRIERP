@@ -248,10 +248,10 @@
                                 <p t-if="ml.lot_id or ml.lot_name" style="margin: 1px 0;">
                                     <strong>Lote:</strong>
                                     <span t-esc="ml.lot_id.name or ml.lot_name or ''"/>
-                                    <span t-if="ml.lot_id.expiration_date or ml.lot_id.life_date">
+                                    <t t-if="ml.lot_id and ml.lot_id.expiration_date">
                                         <strong>Fecha de venc:</strong>
-                                        <span t-esc="(ml.lot_id.expiration_date or ml.lot_id.life_date).strftime('%d.%m.%Y')"/>
-                                    </span>
+                                        <span t-esc="ml.lot_id.expiration_date.strftime('%d.%m.%Y')"/>
+                                    </t>
                                 </p>
                             </t>
                         </t>
