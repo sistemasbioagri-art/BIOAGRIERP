@@ -6,8 +6,14 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     x_percepcion_iibb = fields.Float(
-        string='Percepción IIBB',
+        string='Percepcion IIBB',
         compute='_compute_percepcion_iibb',
+    )
+    x_picking_id = fields.Many2one(
+        'stock.picking',
+        string='Remito / Importacion',
+        domain="[('picking_type_id.code', '=', 'incoming')]",
+        help='Vincula esta factura de gasto a un remito de importacion para prorratear como Costo en Destino.',
     )
 
     @api.depends('invoice_line_ids', 'partner_id', 'move_type',
@@ -35,14 +41,14 @@ class AccountMove(models.Model):
             partner = move.partner_id.commercial_partner_id
             if partner.x_situacion_5:
                 raise ValidationError(
-                    _('[BLOQUEO] Cliente en SITUACIÓN 5: No es posible validar facturas. '
-                      'Contacte al área de administración.')
+                    _('[BLOQUEO] Cliente en SITUACION 5: No es posible validar facturas. '
+                      'Contacte al area de administracion.')
                 )
             if partner.credit_limit > 0 and move.move_type == 'out_invoice':
                 total_debt = partner.credit + move.amount_total_signed
                 if total_debt > partner.credit_limit:
                     raise ValidationError(
-                        _('[BLOQUEO] La factura por $%s excede el límite de crédito del cliente ($%s). '
+                        _('[BLOQUEO] La factura por $%s excede el limite de credito del cliente ($%s). '
                           'Saldo actual deudor: $%s.')
                         % (
                             move.amount_total_signed,
@@ -50,7 +56,51 @@ class AccountMove(models.Model):
                             partner.credit,
                         )
                     )
-        return super().action_post()
+        res = super().action_post()
+
+        for move in self:
+            if move.move_type == 'in_invoice' and move.x_picking_id:
+                move._create_landed_cost_from_bill()
+
+        return res
+
+    def _create_landed_cost_from_bill(self):
+        self.ensure_one()
+        if not self.x_picking_id:
+            return
+
+        picking = self.x_picking_id
+
+        product = self.invoice_line_ids[:1].product_id
+        if not product:
+            product = self.env['product.product'].search([
+                ('type', '=', 'service'),
+                ('company_id', '=', self.company_id.id),
+            ], limit=1)
+        if not product:
+            product = self.env['product.product'].create({
+                'name': 'Costo en Destino - %s' % (self.partner_id.name or ''),
+                'type': 'service',
+                'list_price': 0,
+                'company_id': self.company_id.id,
+            })
+
+        journal = self.env['account.journal'].search([
+            ('company_id', '=', self.company_id.id),
+            ('type', '=', 'general'),
+        ], limit=1)
+
+        landed_cost = self.env['stock.landed.cost'].create({
+            'picking_ids': [(4, picking.id)],
+            'cost_lines': [(0, 0, {
+                'product_id': product.id,
+                'price_unit': self.amount_total,
+                'split_method': 'by_quantity',
+            })],
+            'account_journal_id': journal.id if journal else False,
+        })
+
+        return landed_cost
 
     def _create_debit_note_for_exchange_diff(self, amount_diff):
         if amount_diff < 0.01:
@@ -61,7 +111,7 @@ class AccountMove(models.Model):
             ('company_id', '=', self.company_id.id),
         ], limit=1)
         invoice_lines = [(0, 0, {
-            'name': 'Diferencia de Cambio (Nota de Débito automática)',
+            'name': 'Diferencia de Cambio (Nota de Debito automatica)',
             'quantity': 1,
             'price_unit': amount_diff,
             'tax_ids': [(6, 0, iva_tax.ids)] if iva_tax else [],
