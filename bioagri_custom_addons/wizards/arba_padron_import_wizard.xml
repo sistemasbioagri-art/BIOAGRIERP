@@ -11,7 +11,7 @@
                     <field name="archivo" filename="filename" invisible="1"/>
                     <field name="filename" invisible="1"/>
                     <div class="o_padron_file_input mb-3">
-                        <label class="form-label fw-bold">Archivo del Padron (.txt)</label>
+                        <span class="o_form_label">Archivo del Padron (.txt)</span>
                         <input type="file" class="form-control" accept=".txt,.TXT"/>
                     </div>
                     <div class="o_padron_progress d-none mb-3">
