@@ -191,6 +191,7 @@ class PadronImportController(http.Controller):
         found = 0
         updated = 0
         updates = []
+        details = []
 
         for line in chunk_text.split('\n'):
             line = line.strip()
@@ -211,6 +212,7 @@ class PadronImportController(http.Controller):
                 old_row = request.env.cr.fetchone()
                 old_val = old_row[0] if old_row else 0.0
                 updates.append((data['alicuota_nueva'], pid))
+                details.append((cuit, pid, data['alicuota_nueva'], old_val))
             if len(updates) >= 5000:
                 _flush_updates(request.env.cr, field, updates)
                 updated += len(updates)
@@ -219,6 +221,14 @@ class PadronImportController(http.Controller):
         if updates:
             _flush_updates(request.env.cr, field, updates)
             updated += len(updates)
+
+        if import_id and details:
+            for cuit, pid, val, old in details:
+                request.env.cr.execute(
+                    "INSERT INTO arba_padron_line (import_id, cuit, partner_id, alicuota_anterior, alicuota_nueva, updated) "
+                    "VALUES (%s, %s, %s, %s, %s, true)",
+                    (import_id, cuit, pid, old, val),
+                )
 
         if import_id:
             request.env.cr.execute(
