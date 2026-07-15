@@ -47,6 +47,7 @@ class ArbaPadronImportWizard(models.TransientModel):
         found = 0
         updated = 0
         updates = []
+        updated_details = []
 
         for line in content.split('\n'):
             line = line.strip()
@@ -60,7 +61,15 @@ class ArbaPadronImportWizard(models.TransientModel):
             pid = vat_map.get(cuit)
             if pid:
                 found += 1
+                # get old value before update
+                self.env.cr.execute(
+                    "SELECT %s FROM res_partner WHERE id = %s" % (field, '%s'),
+                    (pid,),
+                )
+                old_row = self.env.cr.fetchone()
+                old_val = old_row[0] if old_row else 0.0
                 updates.append((data['alicuota_nueva'], pid))
+                updated_details.append((cuit, pid, data['alicuota_nueva'], old_val))
             if len(updates) >= 5000:
                 self._flush_updates(field, updates)
                 updated += len(updates)
@@ -77,6 +86,15 @@ class ArbaPadronImportWizard(models.TransientModel):
             'count_total': total,
             'count_updated': updated,
         })
+        for cuit, pid, val, old in updated_details:
+            self.env['arba.padron.line'].create({
+                'import_id': import_record.id,
+                'cuit': cuit,
+                'partner_id': pid,
+                'alicuota_anterior': old,
+                'alicuota_nueva': val,
+                'updated': True,
+            })
 
         _logger.info(
             'PADRON IMPORT: total=%d found=%d updated=%d',
