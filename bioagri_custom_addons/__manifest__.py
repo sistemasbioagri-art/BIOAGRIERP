@@ -19,7 +19,6 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
     'website': '',
     'depends': [
         'base',
-        'web',
         'sale',
         'account',
         'stock',
@@ -48,11 +47,6 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'reports/stock_delivery_report.xml',
         'data/ir_cron.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'bioagri_custom_addons/static/src/js/padron_uploader.js',
-        ],
-    },
     'installable': True,
     'application': False,
     'auto_install': False,
