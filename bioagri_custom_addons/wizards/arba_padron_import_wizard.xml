@@ -64,7 +64,7 @@
     <record id="action_padron_upload_page" model="ir.actions.act_url">
         <field name="name">Importar Padron ARBA</field>
         <field name="url">/padron/upload</field>
-        <field name="target">_blank</field>
+        <field name="target">new</field>
     </record>
 
     <record id="action_arba_padron_import_wizard" model="ir.actions.act_window">
