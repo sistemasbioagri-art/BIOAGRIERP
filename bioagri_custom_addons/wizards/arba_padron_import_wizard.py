@@ -74,6 +74,8 @@ class ArbaPadronImportWizard(models.TransientModel):
             'name': self.filename or 'import_{}'.format(fields.Datetime.now()),
             'tipo': self.tipo,
             'fecha_vigencia': fields.Date.today(),
+            'count_total': total,
+            'count_updated': updated,
         })
 
         _logger.info(

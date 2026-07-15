@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ArbaPadronImport(models.Model):
@@ -13,14 +13,8 @@ class ArbaPadronImport(models.Model):
         ('retencion', 'Retención'),
     ], string='Tipo', required=True)
     line_ids = fields.One2many('arba.padron.line', 'import_id', string='Líneas')
-    count_updated = fields.Integer('Registros Actualizados', compute='_compute_stats')
-    count_total = fields.Integer('Total Líneas', compute='_compute_stats')
-
-    @api.depends('line_ids')
-    def _compute_stats(self):
-        for rec in self:
-            rec.count_total = len(rec.line_ids)
-            rec.count_updated = len(rec.line_ids.filtered('updated'))
+    count_updated = fields.Integer('Registros Actualizados')
+    count_total = fields.Integer('Total Lineas')
 
 
 class ArbaPadronLine(models.Model):
