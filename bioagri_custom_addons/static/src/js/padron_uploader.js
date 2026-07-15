@@ -1,14 +1,15 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { Component, useState, useRef } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { rpc } from "@web/core/network/rpc";
+import { Dialog } from "@web/core/dialog/dialog";
+import { useService } from "@web/core/utils/hooks";
 
 const CHUNK_LINES = 50000;
 
-class PadronUploader extends Component {
+class PadronUploadAction extends Component {
     setup() {
-        this.name = this.props.name;
         this.state = useState({
             uploading: false,
             progress: 0,
@@ -16,15 +17,15 @@ class PadronUploader extends Component {
             done: false,
             importId: null,
         });
-        this.fileInput = useRef("fileInput");
+        this.dialog = useService("dialog");
     }
 
     onFileChange(ev) {
         const file = ev.target.files[0];
         if (!file) return;
 
-        const tipoEl = document.querySelector('select[name="tipo"]');
-        const tipo = tipoEl ? tipoEl.value : 'percepcion';
+        const tipo = document.querySelector('#padron_tipo') ?
+            document.querySelector('#padron_tipo').value : 'percepcion';
 
         this.state.uploading = true;
         this.state.progress = 0;
@@ -87,13 +88,21 @@ class PadronUploader extends Component {
         this.state.done = true;
         this.state.uploading = false;
     }
+
+    onViewResult() {
+        if (!this.state.importId) return;
+        const action = {
+            type: 'ir.actions.act_window',
+            res_model: 'arba.padron.import',
+            res_id: this.state.importId,
+            views: [[false, 'form']],
+            target: 'current',
+            context: {},
+        };
+        this.env.services.action.doAction(action);
+    }
 }
 
-PadronUploader.template = "bioagri_custom_addons.PadronUploader";
-PadronUploader.props = {
-    name: { type: String, optional: true },
-    record: { type: Object, optional: true },
-    field: { type: Object, optional: true },
-};
+PadronUploadAction.template = "bioagri_custom_addons.PadronUploadAction";
 
-registry.category("fields").add("padron_uploader", PadronUploader);
+registry.category("actions").add("padron_upload_action", PadronUploadAction);

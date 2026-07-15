@@ -8,10 +8,11 @@
                 <group>
                     <field name="tipo"/>
                     <field name="separador"/>
+                    <field name="archivo" filename="filename"/>
                     <field name="filename" invisible="1"/>
                 </group>
-                <field name="archivo" widget="padron_uploader" nolabel="1"/>
                 <footer>
+                    <button name="action_import" string="Importar" type="object" class="btn-primary"/>
                     <button string="Cancelar" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
@@ -60,6 +61,11 @@
         </field>
     </record>
 
+    <record id="action_padron_upload_client" model="ir.actions.client">
+        <field name="name">Importar Padron ARBA</field>
+        <field name="tag">padron_upload_action</field>
+    </record>
+
     <record id="action_arba_padron_import_wizard" model="ir.actions.act_window">
         <field name="name">Importar Padron ARBA</field>
         <field name="res_model">arba.padron.import.wizard</field>
@@ -76,7 +82,7 @@
     <menuitem id="menu_arba_padron_import"
               name="Importar Padron ARBA"
               parent="account.menu_finance_configuration"
-              action="action_arba_padron_import_wizard"
+              action="action_padron_upload_client"
               sequence="99"/>
     <menuitem id="menu_arba_padron_history"
               name="Historial de Importaciones ARBA"
