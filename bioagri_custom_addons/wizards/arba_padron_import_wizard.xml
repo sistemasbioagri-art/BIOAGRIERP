@@ -4,15 +4,25 @@
         <field name="name">arba.padron.import.wizard.form</field>
         <field name="model">arba.padron.import.wizard</field>
         <field name="arch" type="xml">
-            <form string="Importar Padrón ARBA">
+            <form string="Importar Padron ARBA" class="o_padron_upload_area">
                 <group>
                     <field name="tipo"/>
                     <field name="separador"/>
-                    <field name="archivo" filename="filename"/>
+                    <field name="archivo" filename="filename" invisible="1"/>
                     <field name="filename" invisible="1"/>
+                    <div class="o_padron_file_input mb-3">
+                        <label class="form-label fw-bold">Archivo del Padron (.txt)</label>
+                        <input type="file" class="form-control" accept=".txt,.TXT"/>
+                    </div>
+                    <div class="o_padron_progress d-none mb-3">
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="o_padron_progress_text text-muted mt-1 d-block"></small>
+                    </div>
                 </group>
                 <footer>
-                    <button name="action_import" string="Importar" type="object" class="btn-primary"/>
                     <button string="Cancelar" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
