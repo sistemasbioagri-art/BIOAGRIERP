@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bioagri_custom_addons.PadronUploader">
+        <div class="o_padron_uploader">
+            <div class="mb-2">
+                <span class="o_form_label fw-bold">Archivo del Padron (.txt)</span>
+            </div>
+            <input type="file" t-ref="fileInput" accept=".txt,.TXT" class="form-control mb-2"
+                   t-on-change="onFileChange" t-att-disabled="state.uploading"/>
+            <t t-if="state.uploading or state.done">
+                <div class="progress mb-2" style="height: 24px;">
+                    <div class="progress-bar bg-success" role="progressbar"
+                         t-att-style="'width:' + state.progress + '%'"
+                         t-att-aria-valuenow="state.progress"
+                         aria-valuemin="0" aria-valuemax="100">
+                        <t t-esc="state.progress"/>%
+                    </div>
+                </div>
+                <small t-attf-class="d-block #{state.done ? 'text-success fw-bold' : 'text-muted'}">
+                    <t t-esc="state.message"/>
+                </small>
+                <a t-if="state.done and state.importId"
+                   t-attf-href="/odoo/#{state.importId}"
+                   class="btn btn-sm btn-primary mt-2" target="_blank">
+                    Ver resultado
+                </a>
+            </t>
+        </div>
+    </t>
+</templates>
