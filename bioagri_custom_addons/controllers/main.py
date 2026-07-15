@@ -222,7 +222,7 @@ class PadronImportController(http.Controller):
 
         if import_id:
             request.env.cr.execute(
-                "UPDATE arba.padron_import SET count_total = count_total + %s, "
+                "UPDATE arba_padron_import SET count_total = count_total + %s, "
                 "count_updated = count_updated + %s WHERE id = %s",
                 (total, updated, import_id),
             )
