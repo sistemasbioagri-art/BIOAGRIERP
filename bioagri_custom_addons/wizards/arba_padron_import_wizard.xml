@@ -8,9 +8,9 @@
                 <group>
                     <field name="tipo"/>
                     <field name="separador"/>
-                    <field name="archivo" widget="padron_uploader"/>
                     <field name="filename" invisible="1"/>
                 </group>
+                <field name="archivo" widget="padron_uploader" nolabel="1"/>
                 <footer>
                     <button string="Cancelar" class="btn-secondary" special="cancel"/>
                 </footer>

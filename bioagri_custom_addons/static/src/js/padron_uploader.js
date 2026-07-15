@@ -8,6 +8,7 @@ const CHUNK_LINES = 50000;
 
 class PadronUploader extends Component {
     setup() {
+        this.name = this.props.name;
         this.state = useState({
             uploading: false,
             progress: 0,
@@ -89,5 +90,10 @@ class PadronUploader extends Component {
 }
 
 PadronUploader.template = "bioagri_custom_addons.PadronUploader";
+PadronUploader.props = {
+    name: { type: String, optional: true },
+    record: { type: Object, optional: true },
+    field: { type: Object, optional: true },
+};
 
 registry.category("fields").add("padron_uploader", PadronUploader);
