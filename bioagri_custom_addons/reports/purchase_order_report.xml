@@ -3,12 +3,13 @@
     <template id="report_purchaseorder_document_bioagri"
               inherit_id="purchase.report_purchaseorder_document">
         <xpath expr="//th[@name='th_description']" position="after">
-            <th name="th_supplier_code">Código Proveedor</th>
+            <th name="th_supplier_code" class="text-center">Cod. Proveedor</th>
         </xpath>
         <xpath expr="//td[@id='product']" position="after">
-            <td name="td_supplier_code">
-                <t t-if="line.product_id.seller_ids">
-                    <span t-field="line.product_id.seller_ids[0].product_code"/>
+            <td name="td_supplier_code" class="text-center">
+                <t t-set="supplier_info" t-value="line.product_id.seller_ids.filtered(lambda s: s.partner_id == doc.partner_id)[:1]"/>
+                <t t-if="supplier_info">
+                    <span t-field="supplier_info.product_code"/>
                 </t>
             </td>
         </xpath>

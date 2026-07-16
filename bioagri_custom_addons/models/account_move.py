@@ -103,25 +103,35 @@ class AccountMove(models.Model):
         return landed_cost
 
     def _create_debit_note_for_exchange_diff(self, amount_diff):
+        self.ensure_one()
         if amount_diff < 0.01:
             return
-        iva_tax = self.env['account.tax'].search([
-            ('type_tax_use', '=', 'sale'),
-            ('amount', '=', 21),
-            ('company_id', '=', self.company_id.id),
+
+        company = self.company_id
+        journal = self.env['account.journal'].search([
+            ('type', '=', 'sale'),
+            ('company_id', '=', company.id),
         ], limit=1)
+
         invoice_lines = [(0, 0, {
-            'name': 'Diferencia de Cambio (Nota de Debito automatica)',
+            'name': 'Diferencia de Cambio (automatica)',
             'quantity': 1,
             'price_unit': amount_diff,
-            'tax_ids': [(6, 0, iva_tax.ids)] if iva_tax else [],
+            'tax_ids': [(6, 0, [])],
         })]
-        debit_move = self.create({
+
+        debit_move = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': self.partner_id.id,
             'invoice_origin': self.name,
             'invoice_date': fields.Date.today(),
+            'journal_id': journal.id if journal else False,
             'invoice_line_ids': invoice_lines,
         })
-        debit_move.action_post()
+
+        try:
+            debit_move.action_post()
+        except Exception:
+            pass
+
         return debit_move

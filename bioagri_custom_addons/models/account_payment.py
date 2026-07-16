@@ -134,13 +134,9 @@ class AccountPayment(models.Model):
                             inv = matched.move_id
                             if inv.move_type != 'out_invoice':
                                 continue
-                            rate_payment = payment.move_id.line_ids[0].currency_id.rate or 1.0
-                            rate_invoice = inv.currency_id.rate or 1.0
-                            if rate_payment == rate_invoice:
-                                continue
-                            inv_amount = inv.amount_total
+                            inv_amount_company = inv.amount_total_signed
                             paid_amount_company = abs(matched.amount)
-                            diff = paid_amount_company - inv_amount
+                            diff = paid_amount_company - inv_amount_company
                             if abs(diff) < 0.01:
                                 continue
                             inv._create_debit_note_for_exchange_diff(abs(diff))
