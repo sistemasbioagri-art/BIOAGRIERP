@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Escalas Régimen General (Código 1) - RG 830 -->
+        <record id="escala_01_01" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">0</field>
+            <field name="monto_hasta">500000</field>
+            <field name="monto_fijo">0</field>
+            <field name="porcentaje">0</field>
+            <field name="sobre_excedente">0</field>
+        </record>
+        <record id="escala_01_02" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">500000.01</field>
+            <field name="monto_hasta">1000000</field>
+            <field name="monto_fijo">0</field>
+            <field name="porcentaje">5</field>
+            <field name="sobre_excedente">500000</field>
+        </record>
+        <record id="escala_01_03" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">1000000.01</field>
+            <field name="monto_hasta">1500000</field>
+            <field name="monto_fijo">25000</field>
+            <field name="porcentaje">9</field>
+            <field name="sobre_excedente">1000000</field>
+        </record>
+        <record id="escala_01_04" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">1500000.01</field>
+            <field name="monto_hasta">2000000</field>
+            <field name="monto_fijo">70000</field>
+            <field name="porcentaje">12</field>
+            <field name="sobre_excedente">1500000</field>
+        </record>
+        <record id="escala_01_05" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">2000000.01</field>
+            <field name="monto_hasta">3000000</field>
+            <field name="monto_fijo">130000</field>
+            <field name="porcentaje">15</field>
+            <field name="sobre_excedente">2000000</field>
+        </record>
+        <record id="escala_01_06" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">3000000.01</field>
+            <field name="monto_hasta">4000000</field>
+            <field name="monto_fijo">280000</field>
+            <field name="porcentaje">18</field>
+            <field name="sobre_excedente">3000000</field>
+        </record>
+        <record id="escala_01_07" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">4000000.01</field>
+            <field name="monto_hasta">5000000</field>
+            <field name="monto_fijo">460000</field>
+            <field name="porcentaje">21</field>
+            <field name="sobre_excedente">4000000</field>
+        </record>
+        <record id="escala_01_08" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">5000000.01</field>
+            <field name="monto_hasta">6000000</field>
+            <field name="monto_fijo">670000</field>
+            <field name="porcentaje">24</field>
+            <field name="sobre_excedente">5000000</field>
+        </record>
+        <record id="escala_01_09" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">6000000.01</field>
+            <field name="monto_hasta">7000000</field>
+            <field name="monto_fijo">910000</field>
+            <field name="porcentaje">27</field>
+            <field name="sobre_excedente">6000000</field>
+        </record>
+        <record id="escala_01_10" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">7000000.01</field>
+            <field name="monto_hasta">8000000</field>
+            <field name="monto_fijo">1180000</field>
+            <field name="porcentaje">30</field>
+            <field name="sobre_excedente">7000000</field>
+        </record>
+        <record id="escala_01_11" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">8000000.01</field>
+            <field name="monto_hasta">9000000</field>
+            <field name="monto_fijo">1480000</field>
+            <field name="porcentaje">33</field>
+            <field name="sobre_excedente">8000000</field>
+        </record>
+        <record id="escala_01_12" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">9000000.01</field>
+            <field name="monto_hasta">10000000</field>
+            <field name="monto_fijo">1810000</field>
+            <field name="porcentaje">36</field>
+            <field name="sobre_excedente">9000000</field>
+        </record>
+        <record id="escala_01_13" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_01"/>
+            <field name="monto_desde">10000000.01</field>
+            <field name="monto_hasta">999999999</field>
+            <field name="monto_fijo">2170000</field>
+            <field name="porcentaje">39</field>
+            <field name="sobre_excedente">10000000</field>
+        </record>
+
+        <!-- Escalas Constructoras (Código 2) - Mismas escalas que Régimen General -->
+        <record id="escala_02_01" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_02"/>
+            <field name="monto_desde">0</field>
+            <field name="monto_hasta">1500000</field>
+            <field name="monto_fijo">0</field>
+            <field name="porcentaje">0</field>
+            <field name="sobre_excedente">0</field>
+        </record>
+        <record id="escala_02_02" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_02"/>
+            <field name="monto_desde">1500000.01</field>
+            <field name="monto_hasta">2000000</field>
+            <field name="monto_fijo">0</field>
+            <field name="porcentaje">1</field>
+            <field name="sobre_excedente">1500000</field>
+        </record>
+        <record id="escala_02_03" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_02"/>
+            <field name="monto_desde">2000000.01</field>
+            <field name="monto_hasta">3000000</field>
+            <field name="monto_fijo">5000</field>
+            <field name="porcentaje">2</field>
+            <field name="sobre_excedente">2000000</field>
+        </record>
+        <record id="escala_02_04" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_02"/>
+            <field name="monto_desde">3000000.01</field>
+            <field name="monto_hasta">4000000</field>
+            <field name="monto_fijo">25000</field>
+            <field name="porcentaje">3</field>
+            <field name="sobre_excedente">3000000</field>
+        </record>
+        <record id="escala_02_05" model="x_ganancias.escala">
+            <field name="regimen_id" ref="regimen_02"/>
+            <field name="monto_desde">4000000.01</field>
+            <field name="monto_hasta">999999999</field>
+            <field name="monto_fijo">55000</field>
+            <field name="porcentaje">4</field>
+            <field name="sobre_excedente">4000000</field>
+        </record>
+    </data>
+</odoo>
