@@ -7,7 +7,7 @@
         </xpath>
         <xpath expr="//td[@id='product']" position="after">
             <td name="td_supplier_code" class="text-center">
-                <t t-set="supplier_info" t-value="line.product_id.seller_ids.filtered(lambda s: s.partner_id == doc.partner_id)[:1]"/>
+                <t t-set="supplier_info" t-value="line.product_id.seller_ids.filtered(lambda s: s.partner_id == o.partner_id)[:1]"/>
                 <t t-if="supplier_info">
                     <span t-field="supplier_info.product_code"/>
                 </t>
