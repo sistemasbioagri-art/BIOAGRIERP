@@ -62,3 +62,4 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
     'auto_install': False,
     'license': 'LGPL-3',
 }
+

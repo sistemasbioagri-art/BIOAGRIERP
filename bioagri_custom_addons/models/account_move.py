@@ -22,17 +22,7 @@ class AccountMove(models.Model):
             return
         existing_products = self.invoice_line_ids.mapped('product_id').ids
         flete = self.env.ref('bioagri_custom_addons.product_flete_importacion', raise_if_not_found=False)
-        if not flete:
-            flete = self.env['product.product'].create({
-                'name': 'Flete de Importacion',
-                'type': 'service',
-            })
         seguro = self.env.ref('bioagri_custom_addons.product_seguro_importacion', raise_if_not_found=False)
-        if not seguro:
-            seguro = self.env['product.product'].create({
-                'name': 'Seguro de Importacion',
-                'type': 'service',
-            })
         lines_to_add = []
         if flete and flete.id not in existing_products:
             lines_to_add.append((0, 0, {
@@ -49,7 +39,7 @@ class AccountMove(models.Model):
                 'price_unit': 0,
             }))
         if lines_to_add:
-            self.write({'invoice_line_ids': lines_to_add})
+            self.invoice_line_ids = lines_to_add
 
     @api.depends('invoice_line_ids', 'partner_id', 'move_type',
                  'partner_id.x_alicuota_percepcion')
