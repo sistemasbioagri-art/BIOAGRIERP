@@ -49,6 +49,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'data/ir_cron.xml',
         'data/regimenes_ganancias.xml',
         'data/escalas_ganancias.xml',
+        'data/product_import_gastos.xml',
     ],
     'assets': {
         'web.assets_backend': [

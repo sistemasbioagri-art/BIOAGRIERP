@@ -16,6 +16,31 @@ class AccountMove(models.Model):
         help='Vincula esta factura de gasto a un remito de importacion para prorratear como Costo en Destino.',
     )
 
+    @api.onchange('x_picking_id')
+    def _onchange_x_picking_id(self):
+        if not self.x_picking_id or self.move_type != 'in_invoice':
+            return
+        existing_products = self.invoice_line_ids.mapped('product_id').ids
+        flete = self.env.ref('bioagri_custom_addons.product_flete_importacion', raise_if_not_found=False)
+        seguro = self.env.ref('bioagri_custom_addons.product_seguro_importacion', raise_if_not_found=False)
+        lines_to_add = []
+        if flete and flete.id not in existing_products:
+            lines_to_add.append((0, 0, {
+                'name': flete.name,
+                'product_id': flete.id,
+                'quantity': 1,
+                'price_unit': 0,
+            }))
+        if seguro and seguro.id not in existing_products:
+            lines_to_add.append((0, 0, {
+                'name': seguro.name,
+                'product_id': seguro.id,
+                'quantity': 1,
+                'price_unit': 0,
+            }))
+        if lines_to_add:
+            self.invoice_line_ids = lines_to_add
+
     @api.depends('invoice_line_ids', 'partner_id', 'move_type',
                  'partner_id.x_alicuota_percepcion')
     def _compute_percepcion_iibb(self):
