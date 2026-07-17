@@ -49,7 +49,7 @@ class AccountMove(models.Model):
                 'price_unit': 0,
             }))
         if lines_to_add:
-            self.invoice_line_ids = lines_to_add
+            self.write({'invoice_line_ids': lines_to_add})
 
     @api.depends('invoice_line_ids', 'partner_id', 'move_type',
                  'partner_id.x_alicuota_percepcion')
