@@ -4,7 +4,7 @@ from odoo import _, api, fields, models
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    x_amount_total_ars = fields.Monetary(string='Total en ARS', compute='_compute_amount_total_ars', currency_field='company_currency_id')
+    x_amount_total_ars = fields.Monetary(string='Total en ARS', compute='_compute_amount_total_ars', currency_field='company_id.currency_id')
     x_currency_rate = fields.Float(string='Tipo de cambio', compute='_compute_amount_total_ars', digits=(12, 4))
 
     @api.depends('amount_total', 'currency_id', 'company_id.currency_id', 'date_order')
