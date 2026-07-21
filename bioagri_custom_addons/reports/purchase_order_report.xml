@@ -27,19 +27,74 @@
             <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
         </xpath>
 
-        <!-- 3. Exchange rate and ARS total at bottom, one line full width -->
-        <xpath expr="//div[last()]" position="after">
-            <div class="row mt-4" t-if="o.currency_id != o.company_id.currency_id">
-                <div class="col-12" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; text-align: center;">
-                    <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> |
-                    <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/> |
-                    <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/> <span t-field="o.company_id.currency_id.name"/>
-                </div>
-            </div>
+        <!-- 3. Replace tax totals call with inline version including currency labels -->
+        <xpath expr="//div[@id='total']//t[@t-call='purchase.document_tax_totals']" position="replace">
+            <t t-set="same_tax_base" t-value="tax_totals['same_tax_base']"/>
+            <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+                <tr class="o_subtotal">
+                    <td><span t-out="subtotal['name']"/></td>
+                    <td class="text-end">
+                        <t t-if="currency.name == 'USD'">US</t>
+                        <span t-att-class="oe_subtotal_footer_separator"
+                              t-out="subtotal['base_amount_currency']"
+                              t-options='{"widget": "monetary", "display_currency": currency}'/>
+                        <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
+                    </td>
+                </tr>
+                <t t-foreach="subtotal['tax_groups']" t-as="tax_group">
+                    <tr class="o_taxes">
+                        <t t-if="same_tax_base or tax_group['display_base_amount_currency'] is False">
+                            <td style="max-width: 200px;">
+                                <span t-out="tax_group['group_name']"/>
+                            </td>
+                            <td class="text-end o_price_total">
+                                <t t-if="currency.name == 'USD'">US</t>
+                                <span class="text-nowrap"
+                                      t-out="tax_group['tax_amount_currency']"
+                                      t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
+                            </td>
+                        </t>
+                        <t t-else="">
+                            <td>
+                                <span t-out="tax_group['group_name']"/>
+                                <span> on </span>
+                                <span class="text-nowrap"
+                                      t-out="tax_group['display_base_amount_currency']"
+                                      t-options='{"widget": "monetary", "display_currency": currency}'/>
+                            </td>
+                            <td class="text-end o_price_total">
+                                <t t-if="currency.name == 'USD'">US</t>
+                                <span class="text-nowrap"
+                                      t-out="tax_group['tax_amount_currency']"
+                                      t-options='{"widget": "monetary", "display_currency": currency}'/>
+                                <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
+                            </td>
+                        </t>
+                    </tr>
+                </t>
+            </t>
+            <tr t-if="'cash_rounding_base_amount_currency' in tax_totals">
+                <td>Rounding</td>
+                <td class="text-end">
+                    <t t-if="currency.name == 'USD'">US</t>
+                    <span t-out="tax_totals['cash_rounding_base_amount_currency']"
+                          t-options='{"widget": "monetary", "display_currency": currency}'/>
+                    <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
+                </td>
+            </tr>
+            <tr class="o_total">
+                <td><strong>Total</strong></td>
+                <td class="text-end">
+                    <t t-if="currency.name == 'USD'">US</t>
+                    <strong t-out="tax_totals['total_amount_currency']"
+                            t-options='{"widget": "monetary", "display_currency": currency}'/>
+                    <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
+                </td>
+            </tr>
         </xpath>
 
-        <!-- 4. Currency format: US$ prefix for USD, $ for ARS, + suffix USD/ARS -->
-        <!-- price_unit: add monetary widget first -->
+        <!-- 4. Currency format in product table: US$ prefix for USD, $ for ARS, + suffix -->
         <xpath expr="//span[@t-field='line.price_unit']" position="attributes">
             <attribute name="t-options">{"widget": "monetary", "display_currency": o.currency_id}</attribute>
         </xpath>
@@ -49,14 +104,12 @@
         <xpath expr="//span[@t-field='line.price_unit']" position="after">
             <span t-field="o.currency_id.name"/>
         </xpath>
-        <!-- price_subtotal -->
         <xpath expr="//span[@t-field='line.price_subtotal']" position="before">
             <t t-if="o.currency_id.name == 'USD'">US</t>
         </xpath>
         <xpath expr="//span[@t-field='line.price_subtotal']" position="after">
             <span t-field="o.currency_id.name"/>
         </xpath>
-        <!-- section subtotals -->
         <xpath expr="//span[@t-out='current_subtotal']" position="before">
             <t t-if="o.currency_id.name == 'USD'">US</t>
         </xpath>
@@ -64,15 +117,16 @@
             <span t-field="o.currency_id.name"/>
         </xpath>
 
-    </template>
+        <!-- 5. Exchange rate box at bottom AFTER tax totals -->
+        <xpath expr="//div[@id='total']" position="after">
+            <div class="row mt-4" t-if="o.currency_id != o.company_id.currency_id">
+                <div class="col-12" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; text-align: center;">
+                    <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> |
+                    <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/> |
+                    <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/> <span t-field="o.company_id.currency_id.name"/>
+                </div>
+            </div>
+        </xpath>
 
-    <!-- 5. Tax totals: US$ prefix for USD + suffix USD/ARS on all monetary fields -->
-    <template id="purchase_tax_totals_currency" inherit_id="purchase.document_tax_totals">
-        <xpath expr="//*[contains(@t-options, 'monetary')]" position="before">
-            <t t-if="currency.name == 'USD'">US</t>
-        </xpath>
-        <xpath expr="//*[contains(@t-options, 'monetary')]" position="after">
-            <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
-        </xpath>
     </template>
 </odoo>
