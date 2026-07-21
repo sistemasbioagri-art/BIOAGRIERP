@@ -29,6 +29,8 @@
 
         <!-- 3. Replace tax totals call with inline version including currency labels -->
         <xpath expr="//div[@id='total']//t[@t-call='purchase.document_tax_totals']" position="replace">
+            <t t-set="tax_totals" t-value="o.tax_totals"/>
+            <t t-set="currency" t-value="o.currency_id"/>
             <t t-set="same_tax_base" t-value="tax_totals['same_tax_base']"/>
             <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
                 <tr class="o_subtotal">
