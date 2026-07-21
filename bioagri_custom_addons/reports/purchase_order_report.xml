@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- 1. Supplier code column (existing) -->
     <template id="report_purchaseorder_document_bioagri"
               inherit_id="purchase.report_purchaseorder_document">
+        
+        <!-- Supplier code column -->
         <xpath expr="//th[@name='th_description']" position="after">
             <th name="th_supplier_code" class="text-center">Cod. Proveedor</th>
         </xpath>
@@ -13,5 +16,30 @@
                 </t>
             </td>
         </xpath>
+
+        <!-- 2. Remove # from title -->
+        <xpath expr="//t[@t-if=\"o.state in ['draft', 'sent', 'to approve']\"]" position="replace">
+            <t t-if="o.state in ['draft', 'sent', 'to approve']">Pedido de Compra <span t-field="o.name"/></t>
+        </xpath>
+        <xpath expr="//t[@t-if=\"o.state in ['purchase', 'done']\"]" position="replace">
+            <t t-if="o.state in ['purchase', 'done']">Orden de Compra <span t-field="o.name"/></t>
+        </xpath>
+        <xpath expr="//t[@t-if=\"o.state == 'cancel']\"]" position="replace">
+            <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
+        </xpath>
+
+        <!-- 3. Add currency info after PO name -->
+        <xpath expr="//div[@t-attf-class=\"oe_structure\"]" position="before">
+            <div class="row mt-2 mb-2">
+                <div class="col-6">
+                    <strong>Moneda:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)
+                </div>
+                <div class="col-6 text-end" t-if="o.currency_id != o.company_id.currency_id">
+                    <strong>Tipo de cambio:</strong> <span t-field="o.x_currency_rate"/> | 
+                    <strong>Total en <span t-field="o.company_id.currency_id.symbol"/>:</strong> <span t-field="o.x_amount_total_ars"/>
+                </div>
+            </div>
+        </xpath>
+
     </template>
 </odoo>
