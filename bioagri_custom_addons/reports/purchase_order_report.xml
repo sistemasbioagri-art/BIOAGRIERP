@@ -27,36 +27,61 @@
             <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
         </xpath>
 
-        <!-- 3. Exchange rate and ARS total at very bottom of document -->
+        <!-- 3. Exchange rate and ARS total at bottom, full width -->
         <xpath expr="//div[last()]" position="after">
-            <div style="margin-top: 20px; border: 1px solid #ccc; padding: 8px;" t-if="o.currency_id != o.company_id.currency_id">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 50%; vertical-align: top;">
-                            <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)
-                        </td>
-                        <td style="width: 50%; vertical-align: top; text-align: right;">
-                            <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/><br/>
-                            <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/>
-                        </td>
-                    </tr>
-                </table>
+            <div class="row mt-4" t-if="o.currency_id != o.company_id.currency_id">
+                <div class="col-12" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/>
+                        </div>
+                        <div class="col-6 text-end">
+                            <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 text-center">
+                            <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/> <span t-field="o.company_id.currency_id.name"/>
+                        </div>
+                    </div>
+                </div>
             </div>
         </xpath>
 
-        <!-- 4. Show currency name after amounts in table -->
+        <!-- 4. Currency format: US$ prefix for USD, $ for ARS, + suffix USD/ARS -->
+        <!-- price_unit: add monetary widget first -->
+        <xpath expr="//span[@t-field='line.price_unit']" position="attributes">
+            <attribute name="t-options">{"widget": "monetary", "display_currency": o.currency_id}</attribute>
+        </xpath>
+        <xpath expr="//span[@t-field='line.price_unit']" position="before">
+            <t t-if="o.currency_id.name == 'USD'">US</t>
+        </xpath>
         <xpath expr="//span[@t-field='line.price_unit']" position="after">
             <span t-field="o.currency_id.name"/>
         </xpath>
+        <!-- price_subtotal -->
+        <xpath expr="//span[@t-field='line.price_subtotal']" position="before">
+            <t t-if="o.currency_id.name == 'USD'">US</t>
+        </xpath>
         <xpath expr="//span[@t-field='line.price_subtotal']" position="after">
+            <span t-field="o.currency_id.name"/>
+        </xpath>
+        <!-- section subtotals -->
+        <xpath expr="//span[@t-out='current_subtotal']" position="before">
+            <t t-if="o.currency_id.name == 'USD'">US</t>
+        </xpath>
+        <xpath expr="//span[@t-out='current_subtotal']" position="after">
             <span t-field="o.currency_id.name"/>
         </xpath>
 
     </template>
 
-    <!-- 5. Add currency name after each amount in tax totals (subtotal, tax, total) -->
+    <!-- 5. Tax totals: US$ prefix for USD + suffix USD/ARS on all monetary fields -->
     <template id="purchase_tax_totals_currency" inherit_id="purchase.document_tax_totals">
-        <xpath expr="//td[contains(@class, 'text-end')]/span" position="after">
+        <xpath expr="//*[contains(@t-options, 'monetary')]" position="before">
+            <t t-if="currency.name == 'USD'">US</t>
+        </xpath>
+        <xpath expr="//*[contains(@t-options, 'monetary')]" position="after">
             <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
         </xpath>
     </template>
