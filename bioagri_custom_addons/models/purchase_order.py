@@ -15,15 +15,16 @@ class PurchaseOrder(models.Model):
                 order.x_amount_total_ars = order.amount_total
                 order.x_currency_rate = 1.0
             else:
-                # ponytail: use _convert for reliable cross-currency conversion
-                converted = order.currency_id._convert(
-                    order.amount_total,
-                    order.company_id.currency_id,
-                    order.company_id,
-                    order.date_order or fields.Date.today()
-                )
-                order.x_amount_total_ars = converted
-                order.x_currency_rate = converted / order.amount_total if order.amount_total else 1.0
+                # ponytail: manual conversion using stored rate
+                # Odoo stores rate as: 1 company_currency = rate foreign_currency
+                # So to get foreign->company: divide by rate
+                rate = order.currency_id.rate
+                if rate and rate > 0:
+                    order.x_currency_rate = 1.0 / rate
+                    order.x_amount_total_ars = order.amount_total / rate
+                else:
+                    order.x_currency_rate = 1.0
+                    order.x_amount_total_ars = order.amount_total
 
     def button_confirm(self):
         res = super().button_confirm()
