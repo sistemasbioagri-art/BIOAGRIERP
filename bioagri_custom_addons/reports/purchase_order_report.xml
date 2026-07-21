@@ -52,5 +52,12 @@
             <span t-field="o.currency_id.name"/>
         </xpath>
 
+        <!-- 5. Add currency name after total amounts in tax totals section -->
+        <xpath expr="//t[@t-call='purchase.document_tax_totals']" position="after">
+            <div style="text-align: right; font-size: 10px; margin-top: 4px;">
+                <strong>Moneda:</strong> <span t-field="o.currency_id.name"/>
+            </div>
+        </xpath>
+
     </template>
 </odoo>
