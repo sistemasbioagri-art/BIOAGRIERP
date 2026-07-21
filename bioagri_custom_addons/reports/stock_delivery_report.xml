@@ -97,20 +97,24 @@
                                     <tr>
                                         <td style="border: none; padding: 1px 0; width: 45%;">Documento/Fecha</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;">
-                                            <span t-esc="o.name or ''"/> / <span t-esc="(o.date_done or o.scheduled_date).strftime('%d.%m.%Y') if (o.date_done or o.scheduled_date) else ''"/>
+                                            <span t-esc="o.name or ''"/> / 
+                                            <span t-if="o.date_done" t-esc="o.date_done.strftime('%d.%m.%Y')"/>
+                                            <span t-if="not o.date_done and o.scheduled_date" t-esc="o.scheduled_date.strftime('%d.%m.%Y')"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">N. Transporte/Fecha</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;">
                                             <span t-if="o.x_patente" t-esc="o.x_patente"/>
-                                            <span t-if="o.date_done"> / <span t-esc="o.date_done.strftime('%d.%m.%Y') if o.date_done else ''"/></span>
+                                            <span t-if="o.date_done"> / <span t-esc="o.date_done.strftime('%d.%m.%Y')"/></span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">Pedido/Fecha</td>
                                         <td style="border: none; padding: 1px 0; text-align: right;">
-                                            <span t-esc="o.origin or ''"/> / <span t-esc="(o.date_done or o.scheduled_date).strftime('%d.%m.%Y') if (o.date_done or o.scheduled_date) else ''"/>
+                                            <span t-esc="o.origin or ''"/> / 
+                                            <span t-if="o.date_done" t-esc="o.date_done.strftime('%d.%m.%Y')"/>
+                                            <span t-if="not o.date_done and o.scheduled_date" t-esc="o.scheduled_date.strftime('%d.%m.%Y')"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -177,7 +181,7 @@
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">DNI:</td>
                                         <td style="border: none; padding: 1px 0;" t-esc="o.x_chofer_dni or ''"/>
                                     </tr>
-                                    <t t-set="total_weight" t-value="sum((move.quantity or move.product_uom_qty) * (move.product_id.weight or 0) for move in o.move_ids_without_package)"/>
+                                    <t t-set="total_weight" t-value="sum([(move.quantity or move.product_uom_qty) * (move.product_id.weight or 0) for move in o.move_ids_without_package])"/>
                                     <tr>
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">Peso - Volumen</td>
                                         <td style="border: none; padding: 1px 0;"></td>
@@ -252,16 +256,17 @@
                         </t>
                     </div>
 
-                    <t t-set="total_packages" t-value="sum(move.quantity or move.product_uom_qty for move in o.move_ids_without_package)"/>
+                    <t t-set="total_packages" t-value="sum([move.quantity or move.product_uom_qty for move in o.move_ids_without_package])"/>
                     <div style="margin-bottom: 6px; font-size: 9px;">
                         <p style="margin: 1px 0;"><strong>Valor declarado:</strong></p>
                         <p style="margin: 1px 0;"><strong>Cant de bultos:</strong> <span t-esc="total_packages"/></p>
                         <p style="margin: 1px 0;"><strong>Cant de pallets:</strong></p>
                     </div>
 
+                    <!-- ponytail: CAI fields (x_cai_number, x_cai_vencimiento) must be added to res.company model first -->
                     <div style="border-top: 1px solid #ccc; padding-top: 4px; margin-bottom: 6px; font-size: 8px;">
-                        <span t-if="o.company_id.x_cai_number">N. CAI: <span t-esc="o.company_id.x_cai_number"/></span>
-                        <span t-if="o.company_id.x_cai_vencimiento" style="float: right;">Fecha de vencimiento: <span t-esc="o.company_id.x_cai_vencimiento.strftime('%d.%m.%Y')"/></span>
+                        <span>N. CAI: _______________</span>
+                        <span style="float: right;">Fecha de vencimiento: _______________</span>
                     </div>
 
                     <table style="width: 100%; border-collapse: collapse; font-size: 7px;">
