@@ -27,27 +27,25 @@
             <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
         </xpath>
 
-        <!-- 3. Show currency in table headers -->
-        <xpath expr="//th[@name='th_price_unit']" position="replace">
-            <th name="th_price_unit" class="text-end">
-                <strong>Precio Unitario (<span t-field="o.currency_id.name"/>)</strong>
-            </th>
-        </xpath>
-        <xpath expr="//th[@name='th_subtotal']" position="replace">
-            <th name="th_subtotal" class="text-end">
-                <strong>Importe (<span t-field="o.currency_id.name"/>)</strong>
-            </th>
+        <!-- 3. Exchange rate and ARS total at bottom left BEFORE tax totals -->
+        <xpath expr="//t[@t-call='purchase.document_tax_totals']" position="before">
+            <table style="width: 100%; margin-bottom: 10px;" t-if="o.currency_id != o.company_id.currency_id">
+                <tr>
+                    <td style="width: 60%; vertical-align: top;">
+                        <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)<br/>
+                        <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.4f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/><br/>
+                        <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/>
+                    </td>
+                </tr>
+            </table>
         </xpath>
 
-        <!-- 4. Exchange rate and ARS total at bottom left -->
-        <xpath expr="//t[@t-call='purchase.document_tax_totals']" position="before">
-            <div class="row mb-2" t-if="o.currency_id != o.company_id.currency_id">
-                <div class="col-6">
-                    <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)<br/>
-                    <strong>Tipo de cambio:</strong> <span t-field="o.x_currency_rate"/> <span t-field="o.currency_id.symbol"/> = 1 <span t-field="o.company_id.currency_id.symbol"/><br/>
-                    <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/>
-                </div>
-            </div>
+        <!-- 4. Show currency name after amounts in table -->
+        <xpath expr="//span[@t-field='line.price_unit']" position="after">
+            <span t-field="o.currency_id.name"/>
+        </xpath>
+        <xpath expr="//span[@t-field='line.price_subtotal']" position="after">
+            <span t-field="o.currency_id.name"/>
         </xpath>
 
     </template>
