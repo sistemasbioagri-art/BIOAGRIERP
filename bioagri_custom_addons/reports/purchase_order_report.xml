@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- 1. Supplier code column (existing) -->
     <template id="report_purchaseorder_document_bioagri"
               inherit_id="purchase.report_purchaseorder_document">
         
-        <!-- Supplier code column -->
+        <!-- 1. Supplier code column -->
         <xpath expr="//th[@name='th_description']" position="after">
             <th name="th_supplier_code" class="text-center">Cod. Proveedor</th>
         </xpath>
@@ -28,15 +27,25 @@
             <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
         </xpath>
 
-        <!-- 3. Add currency info before first row div (vendor info section) -->
-        <xpath expr="//div[contains(@class, 'row')]" position="before">
-            <div class="row mt-2 mb-2">
+        <!-- 3. Show currency in table headers -->
+        <xpath expr="//th[@name='th_price_unit']" position="replace">
+            <th name="th_price_unit" class="text-end">
+                <strong>Precio Unitario (<span t-field="o.currency_id.name"/>)</strong>
+            </th>
+        </xpath>
+        <xpath expr="//th[@name='th_subtotal']" position="replace">
+            <th name="th_subtotal" class="text-end">
+                <strong>Importe (<span t-field="o.currency_id.name"/>)</strong>
+            </th>
+        </xpath>
+
+        <!-- 4. Exchange rate and ARS total at bottom left -->
+        <xpath expr="//t[@t-call='purchase.document_tax_totals']" position="before">
+            <div class="row mb-2" t-if="o.currency_id != o.company_id.currency_id">
                 <div class="col-6">
-                    <strong>Moneda:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)
-                </div>
-                <div class="col-6 text-end" t-if="o.currency_id != o.company_id.currency_id">
-                    <strong>Tipo de cambio:</strong> <span t-field="o.x_currency_rate"/> | 
-                    <strong>Total en <span t-field="o.company_id.currency_id.symbol"/>:</strong> <span t-field="o.x_amount_total_ars"/>
+                    <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)<br/>
+                    <strong>Tipo de cambio:</strong> <span t-field="o.x_currency_rate"/> <span t-field="o.currency_id.symbol"/> = 1 <span t-field="o.company_id.currency_id.symbol"/><br/>
+                    <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/>
                 </div>
             </div>
         </xpath>
