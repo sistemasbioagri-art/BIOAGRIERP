@@ -7,10 +7,10 @@
         <field name="priority" eval="100"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='picking_type_id']" position="after">
-                <field name="x_chofer_nombre" placeholder="Nombre del chofer"/>
-                <field name="x_chofer_dni" placeholder="DNI"/>
-                <field name="x_patente" placeholder="Patente"/>
-                <field name="x_transportista_id" placeholder="Empresa de transporte" domain="[('is_company', '=', True)]"/>
+                <field name="x_chofer_nombre" placeholder="Nombre del chofer" invisible="picking_type_code != 'outgoing'"/>
+                <field name="x_chofer_dni" placeholder="DNI" invisible="picking_type_code != 'outgoing'"/>
+                <field name="x_patente" placeholder="Patente" invisible="picking_type_code != 'outgoing'"/>
+                <field name="x_transportista_id" placeholder="Empresa de transporte" domain="[('is_company', '=', True)]" invisible="picking_type_code != 'outgoing'"/>
                 <field name="x_remito_proveedor" placeholder="N° remito del proveedor"
                        invisible="picking_type_code != 'incoming'"
                        required="picking_type_code == 'incoming'"/>
