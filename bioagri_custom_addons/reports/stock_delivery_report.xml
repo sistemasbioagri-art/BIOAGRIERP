@@ -99,7 +99,7 @@
                                         <td style="border: none; padding: 1px 0; text-align: right;">
                                             <span t-esc="o.name or ''"/> / 
                                             <span t-if="o.date_done" t-esc="o.date_done.strftime('%d.%m.%Y')"/>
-                                            <span t-if="not o.date_done and o.scheduled_date" t-esc="o.scheduled_date.strftime('%d.%m.%Y')"/>
+                                            <span t-if="o.scheduled_date and not o.date_done" t-esc="o.scheduled_date.strftime('%d.%m.%Y')"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -114,7 +114,7 @@
                                         <td style="border: none; padding: 1px 0; text-align: right;">
                                             <span t-esc="o.origin or ''"/> / 
                                             <span t-if="o.date_done" t-esc="o.date_done.strftime('%d.%m.%Y')"/>
-                                            <span t-if="not o.date_done and o.scheduled_date" t-esc="o.scheduled_date.strftime('%d.%m.%Y')"/>
+                                            <span t-if="o.scheduled_date and not o.date_done" t-esc="o.scheduled_date.strftime('%d.%m.%Y')"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -181,7 +181,11 @@
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">DNI:</td>
                                         <td style="border: none; padding: 1px 0;" t-esc="o.x_chofer_dni or ''"/>
                                     </tr>
-                                    <t t-set="total_weight" t-value="sum([(move.quantity or move.product_uom_qty) * (move.product_id.weight or 0) for move in o.move_ids_without_package])"/>
+                                    <t t-set="total_weight" t-value="0"/>
+                                    <t t-foreach="o.move_ids_without_package" t-as="move">
+                                        <t t-set="move_qty" t-value="move.quantity if move.quantity else move.product_uom_qty"/>
+                                        <t t-set="total_weight" t-value="total_weight + move_qty * (move.product_id.weight or 0)"/>
+                                    </t>
                                     <tr>
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">Peso - Volumen</td>
                                         <td style="border: none; padding: 1px 0;"></td>
@@ -240,7 +244,12 @@
                         </tbody>
                     </table>
 
-                    <t t-set="has_lots" t-value="any(move.move_line_ids.lot_id or move.move_line_ids.lot_name for move in o.move_ids_without_package)"/>
+                    <t t-set="has_lots" t-value="False"/>
+                    <t t-foreach="o.move_ids_without_package" t-as="move">
+                        <t t-foreach="move.move_line_ids" t-as="ml">
+                            <t t-if="ml.lot_id or ml.lot_name" t-set="has_lots" t-value="True"/>
+                        </t>
+                    </t>
                     <div t-if="has_lots" style="margin-bottom: 6px; font-size: 9px;">
                         <t t-foreach="o.move_ids_without_package" t-as="move">
                             <t t-foreach="move.move_line_ids" t-as="ml">
@@ -256,7 +265,10 @@
                         </t>
                     </div>
 
-                    <t t-set="total_packages" t-value="sum([move.quantity or move.product_uom_qty for move in o.move_ids_without_package])"/>
+                    <t t-set="total_packages" t-value="0"/>
+                    <t t-foreach="o.move_ids_without_package" t-as="move">
+                        <t t-set="total_packages" t-value="total_packages + (move.quantity if move.quantity else move.product_uom_qty)"/>
+                    </t>
                     <div style="margin-bottom: 6px; font-size: 9px;">
                         <p style="margin: 1px 0;"><strong>Valor declarado:</strong></p>
                         <p style="margin: 1px 0;"><strong>Cant de bultos:</strong> <span t-esc="total_packages"/></p>
