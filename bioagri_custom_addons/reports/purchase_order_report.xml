@@ -27,23 +27,13 @@
             <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
         </xpath>
 
-        <!-- 3. Exchange rate and ARS total at bottom, full width -->
+        <!-- 3. Exchange rate and ARS total at bottom, one line full width -->
         <xpath expr="//div[last()]" position="after">
             <div class="row mt-4" t-if="o.currency_id != o.company_id.currency_id">
-                <div class="col-12" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
-                    <div class="row">
-                        <div class="col-6">
-                            <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/>
-                        </div>
-                        <div class="col-6 text-end">
-                            <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-12 text-center">
-                            <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/> <span t-field="o.company_id.currency_id.name"/>
-                        </div>
-                    </div>
+                <div class="col-12" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; text-align: center;">
+                    <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> |
+                    <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/> |
+                    <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/> <span t-field="o.company_id.currency_id.name"/>
                 </div>
             </div>
         </xpath>
