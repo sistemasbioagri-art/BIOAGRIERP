@@ -30,23 +30,21 @@ class PurchaseOrder(models.Model):
                 order.x_currency_rate = 1.0
                 _logger.info('PO %s: same currency %s, rate=1.0', order.name, order.currency_id.name)
             else:
-                # ponytail: manual rate calculation
-                # Odoo stores rate as: 1 base_currency = rate foreign_currency
-                # Example: rate=0.000677 means 1 ARS = 0.000677 USD
-                # So 1 USD = 1/0.000677 = 1477.50 ARS
-                # To convert: amount / rate
+                # ponytail: Odoo stores rate as: 1 foreign = rate base
+                # Example: rate=1500 means 1 USD = 1500 ARS
+                # To convert USD to ARS: amount * 1500
                 raw_rate = order.currency_id.rate
-                _logger.info('PO %s: raw_rate=%s, currency=%s, base=%s',
-                             order.name, raw_rate, order.currency_id.name, order.company_id.currency_id.name)
+                _logger.info('PO %s: raw_rate=%s, currency=%s, base=%s, amount=%s',
+                             order.name, raw_rate, order.currency_id.name, 
+                             order.company_id.currency_id.name, order.amount_total)
                 
                 if raw_rate and raw_rate > 0:
-                    # rate_for_display = how many ARS per 1 USD
-                    rate_for_display = 1.0 / raw_rate
-                    ars_amount = order.amount_total / raw_rate
-                    order.x_currency_rate = rate_for_display
+                    # rate_for_display = raw_rate (e.g. 1500 ARS per 1 USD)
+                    ars_amount = order.amount_total * raw_rate
+                    order.x_currency_rate = raw_rate
                     order.x_amount_total_ars = ars_amount
-                    _logger.info('PO %s: rate_display=%s, ars_amount=%s',
-                                 order.name, rate_for_display, ars_amount)
+                    _logger.info('PO %s: ars_amount=%s (rate=%s)',
+                                 order.name, ars_amount, raw_rate)
                 else:
                     _logger.warning('PO %s: no rate found!', order.name)
                     order.x_currency_rate = 1.0
