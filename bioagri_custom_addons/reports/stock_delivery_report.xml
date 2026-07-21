@@ -33,17 +33,17 @@
                                             <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 50px; max-width: 130px;" alt="Logo"/>
                                         </td>
                                         <td style="border: none; padding: 0; vertical-align: top; font-size: 9px;">
-                                            <p style="margin: 0; font-size: 13px; font-weight: bold;">Rizobacter</p>
-                                            <p style="margin: 1px 0;">Caja previsional de comercio: 1.278.849</p>
-                                            <p style="margin: 1px 0;">Rizobacter Argentina</p>
-                                            <p style="margin: 1px 0;">Avda. Pte. Arturo Frondizi 1150 Parque Industrial Pergamino 2702</p>
-                                            <p style="margin: 1px 0;">Buenos Aires - Argentina</p>
-                                            <p style="margin: 1px 0;">IVA Responsable Inscripto</p>
-                                            <p style="margin: 1px 0;">C.U.I.T. 30593174057</p>
-                                            <p style="margin: 1px 0;">N. IIBB 30593174057/902</p>
-                                            <p style="margin: 1px 0;">Inicio de Actividades: 20.10.1983</p>
-                                            <p style="margin: 1px 0;">Telefono: 54 2477-409400</p>
-                                            <p style="margin: 1px 0;">Rubro:</p>
+                                            <p style="margin: 0; font-size: 13px; font-weight: bold;" t-esc="o.company_id.name or ''"/>
+                                            <p style="margin: 1px 0;" t-if="o.company_id.street">
+                                                <span t-esc="o.company_id.street"/>
+                                                <span t-if="o.company_id.city">, <span t-esc="o.company_id.city"/></span>
+                                                <span t-if="o.company_id.zip"> CP. <span t-esc="o.company_id.zip"/></span>
+                                            </p>
+                                            <p style="margin: 1px 0;" t-if="o.company_id.state_id">
+                                                <span t-esc="o.company_id.state_id.name"/> - Argentina
+                                            </p>
+                                            <p style="margin: 1px 0;" t-if="o.company_id.vat">C.U.I.T. <span t-esc="o.company_id.vat"/></p>
+                                            <p style="margin: 1px 0;" t-if="o.company_id.phone">Telefono: <span t-esc="o.company_id.phone"/></p>
                                         </td>
                                     </tr>
                                 </table>
@@ -60,8 +60,7 @@
                                             <p style="margin: 0; font-size: 16px; font-weight: bold;">REMITO</p>
                                             <p style="margin: 2px 0; font-size: 8px; color: #666;">DOCUMENTO NO VALIDO COMO FACTURA</p>
                                             <p style="margin: 2px 0; font-size: 12px;">N. <span t-esc="o.name or ''"/></p>
-                                            <p style="margin: 2px 0; font-size: 8px;">Comprobante triplicado</p>
-                                            <p style="margin: 2px 0; font-size: 8px;">Hoja: 1/1</p>
+                                            <p style="margin: 2px 0; font-size: 8px;">Comprobante original</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -97,7 +96,9 @@
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <tr>
                                         <td style="border: none; padding: 1px 0; width: 45%;">Documento/Fecha</td>
-                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.origin or ''"/>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">
+                                            <span t-esc="o.name or ''"/> / <span t-esc="(o.date_done or o.scheduled_date).strftime('%d.%m.%Y') if (o.date_done or o.scheduled_date) else ''"/>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">N. Transporte/Fecha</td>
@@ -108,7 +109,9 @@
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">Pedido/Fecha</td>
-                                        <td style="border: none; padding: 1px 0; text-align: right;" t-esc="o.origin or ''"/>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">
+                                            <span t-esc="o.origin or ''"/> / <span t-esc="(o.date_done or o.scheduled_date).strftime('%d.%m.%Y') if (o.date_done or o.scheduled_date) else ''"/>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">Numero de cliente</td>
@@ -138,7 +141,7 @@
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <tr>
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">Expedicion:</td>
-                                        <td style="border: none; padding: 1px 0;">MERCADERIA EN CONSIGNACION</td>
+                                        <td style="border: none; padding: 1px 0;" t-esc="o.note or ''"/>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">Entrega</td>
@@ -174,17 +177,22 @@
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">DNI:</td>
                                         <td style="border: none; padding: 1px 0;" t-esc="o.x_chofer_dni or ''"/>
                                     </tr>
+                                    <t t-set="total_weight" t-value="sum((move.quantity or move.product_uom_qty) * (move.product_id.weight or 0) for move in o.move_ids_without_package)"/>
                                     <tr>
                                         <td style="border: none; padding: 1px 0; font-weight: bold;">Peso - Volumen</td>
                                         <td style="border: none; padding: 1px 0;"></td>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">Peso total</td>
-                                        <td style="border: none; padding: 1px 0; text-align: right;">15 KG</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">
+                                            <span t-esc="'%.2f KG' % total_weight"/>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="border: none; padding: 1px 0;">Peso neto</td>
-                                        <td style="border: none; padding: 1px 0; text-align: right;">14 KG</td>
+                                        <td style="border: none; padding: 1px 0; text-align: right;">
+                                            <span t-esc="'%.2f KG' % total_weight"/>
+                                        </td>
                                     </tr>
                                 </table>
                             </td>
@@ -193,10 +201,10 @@
 
                     <div style="background: #FFF9C4; padding: 6px 10px; margin-bottom: 6px; text-align: center; border: 1px solid #F9A825;">
                         <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
-                            EMERGENCIAS TOXICOLOGICAS : 0800-888-8694 (24 hs)
+                            EMERGENCIAS TOXICOLOGICAS: 0800-222-2933 (24 hs)
                         </p>
                         <p style="margin: 0; font-size: 9px; font-weight: bold; color: #E65100;">
-                            PARA EMERGENCIAS EN EL TRANSPORTE LLAMAR AL CIQUIIME TE 0800-222-2933 (24 hs)
+                            EN CASO DE ACCIDENTE DURANTE EL TRANSPORTE: 0800-222-2933 (24 hs)
                         </p>
                     </div>
 
@@ -244,23 +252,24 @@
                         </t>
                     </div>
 
+                    <t t-set="total_packages" t-value="sum(move.quantity or move.product_uom_qty for move in o.move_ids_without_package)"/>
                     <div style="margin-bottom: 6px; font-size: 9px;">
                         <p style="margin: 1px 0;"><strong>Valor declarado:</strong></p>
-                        <p style="margin: 1px 0;"><strong>Cant de bultos:</strong> 0</p>
+                        <p style="margin: 1px 0;"><strong>Cant de bultos:</strong> <span t-esc="total_packages"/></p>
                         <p style="margin: 1px 0;"><strong>Cant de pallets:</strong></p>
                     </div>
 
                     <div style="border-top: 1px solid #ccc; padding-top: 4px; margin-bottom: 6px; font-size: 8px;">
-                        <span>N. CAI: 51517216351695</span>
-                        <span style="float: right;">Fecha de vencimiento: 20.06.2026</span>
+                        <span t-if="o.company_id.x_cai_number">N. CAI: <span t-esc="o.company_id.x_cai_number"/></span>
+                        <span t-if="o.company_id.x_cai_vencimiento" style="float: right;">Fecha de vencimiento: <span t-esc="o.company_id.x_cai_vencimiento.strftime('%d.%m.%Y')"/></span>
                     </div>
 
                     <table style="width: 100%; border-collapse: collapse; font-size: 7px;">
                         <tr>
                             <td style="width: 55%; vertical-align: top; border: none; padding-right: 10px;">
-                                <p style="margin: 0 0 2px 0;">1. Rizobacter Argentina S.A. entrega toda la mercaderia en perfectas condiciones y no acepta reclamos o responsabilidad por perdidas o danos durante el viaje.</p>
-                                <p style="margin: 0 0 2px 0;">2. Cualquier reclamo a Rizobacter Argentina S.A. debe interponerse dentro de las 48 hs. inmediatas posteriores a la fecha de recepcion de mercaderia.</p>
-                                <p style="margin: 0 0 2px 0;">3. El transportista reconoce en forma expresa haber recibido de Rizobacter las cartillas de emergencia correspondientes a los productos remitidos.</p>
+                                <p style="margin: 0 0 2px 0;">1. <span t-esc="o.company_id.name or ''"/> entrega toda la mercaderia en perfectas condiciones y no acepta reclamos o responsabilidad por perdidas o danos durante el viaje.</p>
+                                <p style="margin: 0 0 2px 0;">2. Cualquier reclamo a <span t-esc="o.company_id.name or ''"/> debe interponerse dentro de las 48 hs. inmediatas posteriores a la fecha de recepcion de mercaderia.</p>
+                                <p style="margin: 0 0 2px 0;">3. El transportista reconoce en forma expresa haber recibido de <span t-esc="o.company_id.name or ''"/> las cartillas de emergencia correspondientes a los productos remitidos.</p>
                                 <p style="margin: 0 0 2px 0;">4. El transportista asume la obligacion de descontaminar a su exclusivo cargo, costo y responsabilidad la unidad completa utilizada para transportar mercaderia, en forma inmediata posterior a la descarga de misma mercaderia, en un todo conforme con la Resolucion N.779/95.</p>
                                 <p style="margin: 0 0 2px 0;">5. En caso de devolucion de los productos, el dador de carga estara obligado a cumplir las causales establecidas en los arts. 11, 41 y ss. de la Ley 2026-R (antes 7032) de Biocidas y Decreto Reglamentario N. 1567/2013, de la Provincia de Chaco.</p>
                             </td>
