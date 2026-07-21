@@ -55,9 +55,9 @@
     </template>
 
     <!-- 5. Add currency name after each amount in tax totals (subtotal, tax, total) -->
-    <template id="purchase_tax_totals_currency" inherit_id="purchase.document_tax_totals">
-        <xpath expr="//td[@class='text-end']" position="inside">
-            <span t-if="currency" t-esc="' %s' % currency.name"/>
+    <template id="purchase_tax_totals_currency" inherit_id="account.document_tax_totals_template">
+        <xpath expr="//td[contains(@class, 'text-end')]/span" position="after">
+            <span t-if="currency" t-esc="' %s' % currency.name" style="margin-left: 4px;"/>
         </xpath>
     </template>
 </odoo>
