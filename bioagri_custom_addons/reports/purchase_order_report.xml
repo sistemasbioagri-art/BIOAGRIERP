@@ -27,22 +27,20 @@
             <t t-if="o.state == 'cancel'">Orden de Compra Cancelada <span t-field="o.name"/></t>
         </xpath>
 
-        <!-- 3. Exchange rate and ARS total at bottom AFTER tax totals and payment terms -->
-        <xpath expr="//div[@id='payment_term']" position="after">
-            <div class="row mt-4 mb-2" t-if="o.currency_id != o.company_id.currency_id">
-                <div class="col-12">
-                    <table style="width: 100%; border: 1px solid #ccc; padding: 8px;">
-                        <tr>
-                            <td style="width: 50%; vertical-align: top;">
-                                <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)
-                            </td>
-                            <td style="width: 50%; vertical-align: top; text-align: right;">
-                                <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/><br/>
-                                <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+        <!-- 3. Exchange rate and ARS total at very bottom of document -->
+        <xpath expr="//div[last()]" position="after">
+            <div style="margin-top: 20px; border: 1px solid #ccc; padding: 8px;" t-if="o.currency_id != o.company_id.currency_id">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 50%; vertical-align: top;">
+                            <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> (<span t-field="o.currency_id.symbol"/>)
+                        </td>
+                        <td style="width: 50%; vertical-align: top; text-align: right;">
+                            <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/><br/>
+                            <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </xpath>
 
