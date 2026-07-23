@@ -25,7 +25,6 @@
                                 class="btn btn-primary"/>
                     </div>
                     <field name="x_bcra_situacion"/>
-                    <field name="x_bcra_dias_atraso"/>
                     <field name="x_bcra_dias_sin_consultar"/>
                     <field name="x_bcra_ultima_consulta"/>
                 </group>
