@@ -81,8 +81,24 @@ class ResPartner(models.Model):
         help='Listado de entidades financieras donde el cliente tiene deuda.',
         readonly=True,
     )
+    x_bcra_dias_sin_consultar = fields.Integer(
+        string='Días sin consultar',
+        compute='_compute_bcra_dias_sin_consultar',
+        store=False,
+        help='Días transcurridos desde la última consulta a la API del BCRA. '
+             'Si es mayor a 7, el cron debería haber corrido ya.',
+    )
 
     # --- Métodos API BCRA ---
+
+    @api.depends('x_bcra_ultima_consulta')
+    def _compute_bcra_dias_sin_consultar(self):
+        for partner in self:
+            if not partner.x_bcra_ultima_consulta:
+                partner.x_bcra_dias_sin_consultar = 999
+            else:
+                delta = fields.Datetime.now() - partner.x_bcra_ultima_consulta
+                partner.x_bcra_dias_sin_consultar = delta.days
 
     def _limpiar_cuit(self):
         """Extrae solo dígitos del VAT y devuelve 11 dígitos o False."""
@@ -164,24 +180,12 @@ class ResPartner(models.Model):
         # Si situacion 5, activar bloqueo comercial (pero no desactivar nunca)
         if situacion == '5':
             self.write({'x_situacion_5': True})
-            raise UserError(
-                _('ALERTA: Cliente en SITUACIÓN 5 (Irrecuperable) según BCRA. '
-                  'Se ha activado el bloqueo comercial automáticamente. '
-                  'Monto adeudado: %s miles ARS. Entidades: %s')
-                % (monto, ', '.join(entidades))
-            )
-        else:
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'title': _('Consulta BCRA exitosa'),
-                    'message': _('Situación: %s. Monto: %s miles ARS. Días atraso: %s')
-                                % (situacion, monto, dias),
-                    'type': 'success',
-                    'sticky': False,
-                }
-            }
+
+        # ponytail: recargar vista para mostrar campos actualizados sin manual refresh
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     def _cron_consultar_bcra_todos(self):
         """Cron semanal: consulta todos los clientes con CUIT."""

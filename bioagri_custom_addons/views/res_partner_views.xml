@@ -25,11 +25,9 @@
                                 class="btn btn-primary"/>
                     </div>
                     <field name="x_bcra_situacion"/>
-                    <field name="x_bcra_monto"/>
                     <field name="x_bcra_dias_atraso"/>
-                    <field name="x_bcra_entidades"/>
+                    <field name="x_bcra_dias_sin_consultar"/>
                     <field name="x_bcra_ultima_consulta"/>
-                    <field name="x_bcra_tipo_consulta"/>
                 </group>
             </xpath>
         </field>
