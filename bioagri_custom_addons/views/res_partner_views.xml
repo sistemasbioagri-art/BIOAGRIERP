@@ -17,6 +17,20 @@
                 <group name="bioagri_ganancias" string="Bioagri - Retención de Ganancias">
                     <field name="x_regimen_ganancias"/>
                 </group>
+                <group name="bioagri_bcra" string="Bioagri - Central de Deudores (BCRA)">
+                    <div class="oe_button_box" style="margin-bottom: 10px;">
+                        <button name="action_consultar_bcra"
+                                type="object"
+                                string="Consultar BCRA"
+                                class="btn btn-primary"/>
+                    </div>
+                    <field name="x_bcra_situacion"/>
+                    <field name="x_bcra_monto"/>
+                    <field name="x_bcra_dias_atraso"/>
+                    <field name="x_bcra_entidades"/>
+                    <field name="x_bcra_ultima_consulta"/>
+                    <field name="x_bcra_tipo_consulta"/>
+                </group>
             </xpath>
         </field>
     </record>
