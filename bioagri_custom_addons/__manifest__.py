@@ -54,6 +54,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
     ],
     'assets': {
         'web.assets_backend': [
+            'bioagri_custom_addons/static/src/css/bioagri.css',
             'bioagri_custom_addons/static/src/js/padron_uploader.js',
             'bioagri_custom_addons/static/src/xml/padron_uploader.xml',
         ],
