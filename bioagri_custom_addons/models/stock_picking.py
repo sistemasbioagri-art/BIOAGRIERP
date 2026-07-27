@@ -20,11 +20,11 @@ class StockPicking(models.Model):
     def button_validate(self):
         for picking in self:
             code = picking.picking_type_id.code
-            if code == 'outgoing':
+            if code in ('outgoing', 'internal'):
                 if not picking.x_chofer_nombre or not picking.x_chofer_dni or not picking.x_patente:
                     raise ValidationError(
                         _('Complete los datos del chofer (Nombre, DNI, Patente) '
-                          'antes de validar el remito de salida.')
+                          'antes de validar el remito.')
                     )
             if code == 'incoming':
                 if not picking.x_remito_proveedor:

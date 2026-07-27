@@ -7,7 +7,7 @@
         <field name="priority" eval="100"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='picking_type_id']" position="after">
-                <group string="Datos del Transporte" invisible="picking_type_code != 'outgoing'">
+                <group string="Datos del Transporte" invisible="picking_type_code not in ('outgoing', 'internal')">
                     <field name="x_chofer_nombre" placeholder="Nombre del chofer"/>
                     <field name="x_chofer_dni" placeholder="DNI"/>
                     <field name="x_patente" placeholder="Patente"/>
