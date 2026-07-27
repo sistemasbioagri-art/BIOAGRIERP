@@ -39,6 +39,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'wizards/arba_padron_import_wizard.xml',
         'reports/purchase_order_report.xml',
         'reports/invoice_report.xml',
+        'views/purchase_order_views.xml',
         'views/purchase_supplierinfo_views.xml',
         'views/currency_rate_updater_views.xml',
         'views/ganancias_regimen_views.xml',
