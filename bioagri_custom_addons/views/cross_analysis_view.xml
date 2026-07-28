@@ -12,6 +12,7 @@
                 <field name="qty_invoiced" sum="Cant. Facturada"/>
                 <field name="qty_pending_delivery" sum="Pend. Entrega"/>
                 <field name="qty_pending_invoice" sum="Pend. Facturar"/>
+                <field name="qty_in_client" sum="Stock en Cliente"/>
             </list>
         </field>
     </record>
@@ -28,6 +29,7 @@
                 <field name="qty_invoiced" type="measure"/>
                 <field name="qty_pending_delivery" type="measure"/>
                 <field name="qty_pending_invoice" type="measure"/>
+                <field name="qty_in_client" type="measure"/>
             </pivot>
         </field>
     </record>

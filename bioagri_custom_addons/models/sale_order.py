@@ -5,6 +5,13 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    x_es_consignacion = fields.Boolean(
+        string='Venta de Consignación',
+        help='Si está activo, indica que este pedido es para facturar producto que ya '
+             'se encuentra en poder del cliente (consignación previa). '
+             'No generará exigencia de datos de transporte en el remito.',
+    )
+
     def action_confirm(self):
         for order in self:
             partner = order.partner_id.commercial_partner_id

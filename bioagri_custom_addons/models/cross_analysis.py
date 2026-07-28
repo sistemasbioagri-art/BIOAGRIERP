@@ -14,6 +14,7 @@ class BioagriCrossAnalysis(models.Model):
     qty_invoiced = fields.Float('Cant. Facturada', readonly=True)
     qty_pending_delivery = fields.Float('Pendiente de Entrega', readonly=True)
     qty_pending_invoice = fields.Float('Pendiente de Facturar', readonly=True)
+    qty_in_client = fields.Float('Stock en Cliente', readonly=True)
 
     def _get_sql_view(self):
         return """
@@ -41,6 +42,19 @@ class BioagriCrossAnalysis(models.Model):
                   AND spt.code = 'outgoing'
                 GROUP BY sm.partner_id, sm.product_id
             ),
+            stock_cliente AS (
+                SELECT
+                    sm.partner_id,
+                    sm.product_id,
+                    SUM(sm.product_uom_qty) AS qty_stock_cliente
+                FROM stock_move sm
+                JOIN stock_picking sp ON sp.id = sm.picking_id
+                JOIN stock_picking_type spt ON spt.id = sp.picking_type_id
+                WHERE sm.state = 'done'
+                  AND spt.code = 'internal'
+                  AND sm.partner_id IS NOT NULL
+                GROUP BY sm.partner_id, sm.product_id
+            ),
             facturado AS (
                 SELECT
                     aml.partner_id,
@@ -55,17 +69,20 @@ class BioagriCrossAnalysis(models.Model):
             )
             SELECT
                 ROW_NUMBER() OVER () AS id,
-                COALESCE(p.partner_id, e.partner_id, f.partner_id) AS partner_id,
-                COALESCE(p.product_id, e.product_id, f.product_id) AS product_id,
+                COALESCE(p.partner_id, e.partner_id, sc.partner_id, f.partner_id) AS partner_id,
+                COALESCE(p.product_id, e.product_id, sc.product_id, f.product_id) AS product_id,
                 COALESCE(p.qty_ordered, 0) AS qty_ordered,
                 COALESCE(e.qty_delivered, 0) AS qty_delivered,
                 COALESCE(f.qty_invoiced, 0) AS qty_invoiced,
                 COALESCE(p.qty_ordered, 0) - COALESCE(e.qty_delivered, 0) AS qty_pending_delivery,
-                COALESCE(e.qty_delivered, 0) - COALESCE(f.qty_invoiced, 0) AS qty_pending_invoice
+                COALESCE(e.qty_delivered, 0) - COALESCE(f.qty_invoiced, 0) AS qty_pending_invoice,
+                GREATEST(COALESCE(sc.qty_stock_cliente, 0) - COALESCE(f.qty_invoiced, 0), 0) AS qty_in_client
             FROM pedidos p
             FULL JOIN entregas e ON e.partner_id = p.partner_id AND e.product_id = p.product_id
-            FULL JOIN facturado f ON f.partner_id = COALESCE(p.partner_id, e.partner_id)
-                                AND f.product_id = COALESCE(p.product_id, e.product_id)
+            FULL JOIN stock_cliente sc ON sc.partner_id = COALESCE(p.partner_id, e.partner_id)
+                                     AND sc.product_id = COALESCE(p.product_id, e.product_id)
+            FULL JOIN facturado f ON f.partner_id = COALESCE(p.partner_id, e.partner_id, sc.partner_id)
+                                AND f.product_id = COALESCE(p.product_id, e.product_id, sc.product_id)
         )
         """
 
