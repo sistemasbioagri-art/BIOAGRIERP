@@ -5,6 +5,9 @@ from odoo.exceptions import ValidationError
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    x_requiere_chofer = fields.Boolean(
+        'Requiere información del chofer', default=True,
+    )
     x_chofer_nombre = fields.Char('Nombre del Chofer')
     x_chofer_dni = fields.Char('DNI del Chofer')
     x_patente = fields.Char('Patente del Vehículo')
@@ -19,14 +22,7 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         for picking in self:
-            code = picking.picking_type_id.code
-            if code in ('outgoing', 'internal'):
-                if not picking.x_chofer_nombre or not picking.x_chofer_dni or not picking.x_patente:
-                    raise ValidationError(
-                        _('Complete los datos del chofer (Nombre, DNI, Patente) '
-                          'antes de validar el remito.')
-                    )
-            if code == 'incoming':
+            if picking.picking_type_id.code == 'incoming':
                 if not picking.x_remito_proveedor:
                     raise ValidationError(
                         _('Complete el número de Remito del Proveedor '

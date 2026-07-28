@@ -7,15 +7,15 @@
         <field name="priority" eval="100"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='picking_type_id']" position="after">
-                <group string="Datos del Transporte" invisible="picking_type_code not in ('outgoing', 'internal')">
+                <field name="x_requiere_chofer"/>
+                <group string="Datos del Transporte" invisible="not x_requiere_chofer">
                     <field name="x_chofer_nombre" placeholder="Nombre del chofer"/>
                     <field name="x_chofer_dni" placeholder="DNI"/>
                     <field name="x_patente" placeholder="Patente"/>
                     <field name="x_transportista_id" placeholder="Empresa de transporte" domain="[('is_company', '=', True)]"/>
                 </group>
                 <field name="x_remito_proveedor" placeholder="N° remito del proveedor"
-                       invisible="picking_type_code != 'incoming'"
-                       required="picking_type_code == 'incoming'"/>
+                       invisible="picking_type_code != 'incoming'"/>
             </xpath>
         </field>
     </record>
