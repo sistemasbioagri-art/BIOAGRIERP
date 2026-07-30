@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
-BCRA_URL = 'https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones/USD'
+BCRA_URL = 'https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones'
 DOLARAPI_URL = 'https://dolarapi.com/v1/dolares/oficial'
 
 
@@ -24,7 +24,7 @@ class ResCurrencyRate(models.Model):
             results = data.get('results', {})
             detalle = results.get('detalle', [])
             for item in detalle:
-                if item.get('codigoMoneda') == 'A3500':
+                if item.get('codigoMoneda') == 'REF':
                     rate_val = item.get('tipoCotizacion', 0)
                     return {
                         'rate': rate_val,
