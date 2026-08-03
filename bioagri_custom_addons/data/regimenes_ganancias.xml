@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="regimen_01" model="x_ganancias.regimen">
+            <field name="code">1</field>
+            <field name="name">Servicios - Régimen General (RG 830)</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_02" model="x_ganancias.regimen">
+            <field name="code">2</field>
+            <field name="name">Constructoras</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_03" model="x_ganancias.regimen">
+            <field name="code">3</field>
+            <field name="name">Locación de Obras y Servicios</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_11" model="x_ganancias.regimen">
+            <field name="code">11</field>
+            <field name="name">Servicios Informáticos</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_12" model="x_ganancias.regimen">
+            <field name="code">12</field>
+            <field name="name">Profesionales</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_18" model="x_ganancias.regimen">
+            <field name="code">18</field>
+            <field name="name">Honorarios Directores</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_31" model="x_ganancias.regimen">
+            <field name="code">31</field>
+            <field name="name">Alquileres de Bienes Muebles</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_32" model="x_ganancias.regimen">
+            <field name="code">32</field>
+            <field name="name">Alquileres de Inmuebles</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+        <record id="regimen_33" model="x_ganancias.regimen">
+            <field name="code">33</field>
+            <field name="name">Cuotas de Administración</field>
+            <field name="minimo_no_imponible">1500000</field>
+            <field name="alicuota_fija">0</field>
+            <field name="usa_escala" eval="True"/>
+        </record>
+    </data>
+</odoo>

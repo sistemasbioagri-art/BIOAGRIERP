@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_bioagri" model="ir.ui.view">
+        <field name="name">stock.picking.form.bioagri</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <group string="Datos del Transporte">
+                    <field name="x_requiere_chofer"/>
+                    <field name="x_chofer_nombre" placeholder="Nombre del chofer" invisible="not x_requiere_chofer"/>
+                    <field name="x_chofer_dni" placeholder="DNI" invisible="not x_requiere_chofer"/>
+                    <field name="x_patente" placeholder="Patente" invisible="not x_requiere_chofer"/>
+                    <field name="x_transportista_id" placeholder="Empresa de transporte" domain="[('is_company', '=', True)]" invisible="not x_requiere_chofer"/>
+                </group>
+                <field name="x_remito_proveedor" placeholder="N° remito del proveedor"
+                       invisible="picking_type_code != 'incoming'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_landed_costs"
+              name="Costos en destino"
+              parent="stock.menu_stock_root"
+              action="stock_landed_costs.action_stock_landed_cost"
+              sequence="99"/>
+</odoo>

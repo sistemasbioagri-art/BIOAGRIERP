@@ -1,0 +1,5 @@
+/* Ocultar filas extras (ej: diferencia de cambio, redondeo) en widget tax_totals */
+/* Estas filas usan <td colspan="2"> en vez de label+valor */
+.o_field_widget[name="tax_totals"] table tr td[colspan="2"] {
+    display: none !important;
+}

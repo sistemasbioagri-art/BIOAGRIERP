@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_form_bioagri" model="ir.ui.view">
+        <field name="name">account.payment.form.bioagri</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="after">
+                <field name="x_base_retencion" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'" readonly="1"/>
+                <field name="x_retencion_ganancias" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'" readonly="1"/>
+                <field name="x_regimen_aplicado" invisible="payment_type != 'outbound'" readonly="1"/>
+                <field name="x_acumulado_mes" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="payment_type != 'outbound'" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_export_sire_txt" model="ir.actions.server">
+        <field name="name">Exportar SIRE (.txt)</field>
+        <field name="model_id" ref="account.model_account_payment"/>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="state">code</field>
+        <field name="code">action = records.action_generate_sire_txt()</field>
+    </record>
+</odoo>

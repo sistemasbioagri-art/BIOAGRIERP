@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="bioagri_custom_addons.PadronUploadAction">
+        <div class="o_action d-flex flex-column p-4" style="max-width:600px;margin:0 auto;">
+            <h4 class="mb-4">Importar Padron ARBA</h4>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tipo de Padron</label>
+                <select id="padron_tipo" class="form-select" t-att-disabled="state.uploading">
+                    <option value="percepcion">Percepcion (PadronRGSPer*.txt)</option>
+                    <option value="retencion">Retencion (PadronRGSRet*.txt)</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Archivo .txt del Padron</label>
+                <input type="file" accept=".txt,.TXT" class="form-control"
+                       t-on-change="onFileChange" t-att-disabled="state.uploading"/>
+            </div>
+            <t t-if="state.uploading">
+                <div class="progress mb-2" style="height:26px;">
+                    <div class="progress-bar bg-success" role="progressbar"
+                         t-att-style="'width:' + state.progress + '%'"
+                         t-att-aria-valuenow="state.progress"
+                         aria-valuemin="0" aria-valuemax="100">
+                        <t t-esc="state.progress"/>%
+                    </div>
+                </div>
+                <small class="text-muted d-block">
+                    <t t-esc="state.message"/>
+                </small>
+            </t>
+            <t t-if="state.done">
+                <div class="alert alert-success mt-2 mb-0">
+                    <t t-esc="state.message"/>
+                </div>
+                <button class="btn btn-primary mt-3" t-on-click="onViewResult">
+                    Ver resultado
+                </button>
+            </t>
+            <t t-if="state.error">
+                <div class="alert alert-danger mt-2 mb-0">
+                    <t t-esc="state.message"/>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>
