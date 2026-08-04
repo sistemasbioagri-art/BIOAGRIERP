@@ -62,7 +62,7 @@ class ResCurrencyRate(models.Model):
         if not rate_data:
             raise UserError('No se pudo obtener la cotización del BCRA ni de DolarAPI.')
 
-        rate_value = rate_data['rate']
+        rate_value = 1.0 / rate_data['rate']
         rate_date = rate_data['date']
 
         if rate_value <= 0:

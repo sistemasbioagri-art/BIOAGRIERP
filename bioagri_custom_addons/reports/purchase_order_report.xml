@@ -119,16 +119,5 @@
             <span t-field="o.currency_id.name"/>
         </xpath>
 
-        <!-- 5. Exchange rate box at bottom AFTER tax totals -->
-        <xpath expr="//div[@id='total']" position="after">
-            <div class="row mt-4" t-if="o.currency_id != o.company_id.currency_id">
-                <div class="col-12" style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; text-align: center;">
-                    <strong>Moneda de la orden:</strong> <span t-field="o.currency_id.name"/> |
-                    <strong>Tipo de cambio:</strong> 1 <span t-field="o.currency_id.name"/> = <span t-esc="'%.2f' % o.x_currency_rate"/> <span t-field="o.company_id.currency_id.name"/> |
-                    <strong>Total en <span t-field="o.company_id.currency_id.name"/>:</strong> <span t-field="o.x_amount_total_ars"/> <span t-field="o.company_id.currency_id.name"/>
-                </div>
-            </div>
-        </xpath>
-
     </template>
 </odoo>
