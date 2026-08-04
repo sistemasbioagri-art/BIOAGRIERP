@@ -1,17 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Fix: widget tax_totals must use currency_id (USD) instead of company currency (ARS) -->
-    <record id="purchase_order_form_bioagri_currency" model="ir.ui.view">
-        <field name="name">purchase.order.form.bioagri.currency</field>
-        <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='tax_totals']" position="before">
-                <field name="currency_id" readonly="1" class="oe_inline fw-bold" style="margin-bottom: 4px;"/>
-            </xpath>
-            <xpath expr="//field[@name='tax_totals']" position="attributes">
-                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
-            </xpath>
-        </field>
-    </record>
 </odoo>

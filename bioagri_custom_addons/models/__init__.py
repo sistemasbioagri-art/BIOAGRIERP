@@ -6,7 +6,6 @@ from . import account_payment
 from . import purchase_order
 from . import cross_analysis
 from . import arba_padron
-from . import currency_rate_updater
 from . import ganancias_regimen
 from . import ganancias_escala
 from . import res_company

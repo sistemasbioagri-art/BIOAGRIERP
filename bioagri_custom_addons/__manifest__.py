@@ -13,7 +13,6 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
 - Precarga de costos de importación (Landed Costs) para FOB/CIF
 - Retención de Ganancias RG 830 con regímenes configurables + SIRE .txt + Certificado PDF
 - Informe cruzado de stock, ventas y facturación
-- Actualización automática de cotización USD (BCRA)
 """,
     'author': 'Bioagri S.A.',
     'website': '',
@@ -39,9 +38,7 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
         'wizards/arba_padron_import_wizard.xml',
         'reports/purchase_order_report.xml',
         'reports/invoice_report.xml',
-        'views/purchase_order_views.xml',
         'views/purchase_supplierinfo_views.xml',
-        'views/currency_rate_updater_views.xml',
         'views/ganancias_regimen_views.xml',
         'views/ganancias_escala_views.xml',
         'views/res_company_views.xml',
@@ -54,8 +51,6 @@ Módulo personalizado para Bioagri S.A. (Odoo 18)
     ],
     'assets': {
         'web.assets_backend': [
-            'bioagri_custom_addons/static/src/css/bioagri.css',
-            'bioagri_custom_addons/static/src/components/tax_totals/tax_totals_patch.js',
             'bioagri_custom_addons/static/src/js/padron_uploader.js',
             'bioagri_custom_addons/static/src/xml/padron_uploader.xml',
         ],
