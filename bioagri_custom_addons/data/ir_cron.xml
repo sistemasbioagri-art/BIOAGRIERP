@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="cron_actualizar_cotizacion_bcra" model="ir.cron">
+        <field name="name">Actualizar cotización USD BCRA</field>
+        <field name="model_id" ref="base.model_res_currency"/>
+        <field name="state">code</field>
+        <field name="code">env['res.currency.rate']._cron_actualizar_cotizacion()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+
     <record id="cron_consultar_bcra_deudores" model="ir.cron">
         <field name="name">Consultar BCRA Central de Deudores</field>
         <field name="model_id" ref="base.model_res_partner"/>
