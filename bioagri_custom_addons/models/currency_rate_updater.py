@@ -62,15 +62,14 @@ class ResCurrencyRate(models.Model):
         if not rate_data:
             raise UserError('No se pudo obtener la cotización del BCRA ni de DolarAPI.')
 
-        rate_value = rate_data['rate']
+        # Odoo convierte con rate[destino]/rate[origen] y la moneda compania vale 1, asi que
+        # USD->ARS multiplica por 1/rate[USD]. El campo guarde 1/tipoCotizacion, no el directo:
+        # asi queda "Unidad por ARS" en dolares por peso y "ARS por unidad" en pesos por dolar.
+        rate_value = 1.0 / rate_data['rate']
         rate_date = rate_data['date']
 
-        if rate_value < 1:
-            raise UserError(
-                'La cotización recibida es inválida (%s). Un tipo de cambio USD/ARS siempre '
-                'vale más de 1; si llega menor, la tasa viene invertida y hay que guardar '
-                'tipoCotizacion sin dividir.' % rate_value
-            )
+        if rate_value <= 0:
+            raise UserError('La cotización recibida es inválida.')
 
         existing = self.search([
             ('currency_id', '=', usd.id),
