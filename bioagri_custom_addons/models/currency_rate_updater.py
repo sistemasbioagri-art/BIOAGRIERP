@@ -24,7 +24,7 @@ class ResCurrencyRate(models.Model):
             results = data.get('results', {})
             detalle = results.get('detalle', [])
             for item in detalle:
-                if item.get('codigoMoneda') == 'REF':
+                if item.get('codigoMoneda') == 'USD':
                     rate_val = item.get('tipoCotizacion', 0)
                     return {
                         'rate': rate_val,
@@ -62,11 +62,15 @@ class ResCurrencyRate(models.Model):
         if not rate_data:
             raise UserError('No se pudo obtener la cotización del BCRA ni de DolarAPI.')
 
-        rate_value = 1.0 / rate_data['rate']
+        rate_value = rate_data['rate']
         rate_date = rate_data['date']
 
-        if rate_value <= 0:
-            raise UserError('La cotización recibida es inválida.')
+        if rate_value < 1:
+            raise UserError(
+                'La cotización recibida es inválida (%s). Un tipo de cambio USD/ARS siempre '
+                'vale más de 1; si llega menor, la tasa viene invertida y hay que guardar '
+                'tipoCotizacion sin dividir.' % rate_value
+            )
 
         existing = self.search([
             ('currency_id', '=', usd.id),
