@@ -24,7 +24,7 @@ class ResCurrencyRate(models.Model):
             results = data.get('results', {})
             detalle = results.get('detalle', [])
             for item in detalle:
-                if item.get('codigoMoneda') == 'REF':
+                if item.get('codigoMoneda') == 'USD':
                     rate_val = item.get('tipoCotizacion', 0)
                     return {
                         'rate': rate_val,
@@ -62,6 +62,9 @@ class ResCurrencyRate(models.Model):
         if not rate_data:
             raise UserError('No se pudo obtener la cotización del BCRA ni de DolarAPI.')
 
+        # Odoo convierte con rate[destino]/rate[origen] y la moneda compania vale 1, asi que
+        # USD->ARS multiplica por 1/rate[USD]. El campo guarde 1/tipoCotizacion, no el directo:
+        # asi queda "Unidad por ARS" en dolares por peso y "ARS por unidad" en pesos por dolar.
         rate_value = 1.0 / rate_data['rate']
         rate_date = rate_data['date']
 
